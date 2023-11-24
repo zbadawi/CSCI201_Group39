@@ -244,7 +244,38 @@
     </style>
   </head>
   <body>
-    <div class="register-page">
+
+    <h2>Please Fill out form to Register!</h2>
+
+    form id="login-form">
+      <div class="form-group row">
+        <label for="username" class="login-text col-form-label">Username:</label>
+        <div>
+          <input type="text" name="username" class="form-control" placeholder="Username" id="username">
+
+          <small id="username-error" class="form-text text-danger"></small>
+        </div>
+      </div> <!-- #username .form-group -->
+
+      <div class="form-group row">
+        <label for="password" class="login-text col-form-label">Password:</label>
+        <div>
+          <input type="text" name="password" class="form-control" placeholder="Password" id="password">
+
+          <small id="password-error" class="form-text text-danger"></small>
+        </div>
+      </div> <!-- #password .form-group -->                                                                             
+
+      <div class="form-group row">
+        <div>
+          <button type="submit" class="btn custom-btn">Login</button>
+        </div> <!-- .col -->
+      </div> <!-- .form-group -->
+    </form>
+
+
+
+    <!-- <div class="register-page">
       <div class="rectangle"></div>
       <div class="div"></div>
       <div class="rectangle-2"></div>
@@ -267,13 +298,12 @@
       <div class="text-wrapper-7">Password:</div>
       <div class="text-wrapper-8">Confirm Password:</div>
       <div class="text-wrapper-9">Type:</div>
-      <p class="p">Please Fill out form to Register!</p>
       <div class="woman-holding-soil-wrapper">
         <img
           class="woman-holding-soil"
           src="https://c.animaapp.com/LHYua1nr/img/woman-holding-soil-with-green-plant@2x.png"
         />
       </div>
-    </div>
+    </div> -->
   </body>
 </html>
