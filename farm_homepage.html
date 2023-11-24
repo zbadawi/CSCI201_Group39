@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Market Place</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .header img {
+            height: 50px;
+        }
+
+        .header button {
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .header button:hover {
+            background-color: #45a049;
+        }
+
+        .marketplace-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .marketplace-header {
+            text-align: center;
+            font-size: 2em;
+            margin: 20px 0;
+        }
+
+        .stalls {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+        .stall {
+            width: 150px;
+            height: 150px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            line-height: 150px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .stall:hover {
+            transform: scale(1.05);
+        }
+
+   .stall {
+    
+    align-items: center; /* Align vertically */
+
+
+}
+
+.stall-img {
+        width: 120px;
+    height: auto;
+}
+
+.marketplace-image{
+    height: 500px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="img/logo.png" alt="Market Logo">
+        <div>
+            <button onclick="location.href='login.html'">Login</button>
+            <button onclick="location.href='signup.html'">Signup</button>
+        </div>
+    </div>
+
+    <img src="img/marketplace_home.png" alt="Farmer's Market" class="marketplace-image">
+
+    <h2 class="marketplace-header">Marketplace</h2>
+
+    <div class="stalls">
+        <!-- Example stalls -->
+<div class="stall" onclick="location.href='seller1.html'">
+    <img src="img/Stall.png" alt="Stall Image" class="stall-img">
+    <div>
+        Stall 1
+    </div>
+</div>
+<div class="stall" onclick="location.href='seller1.html'">
+    <img src="img/Stall.png" alt="Stall Image" class="stall-img">
+    <div>
+        Stall 1
+    </div>
+</div>
+<div class="stall" onclick="location.href='seller1.html'">
+    <img src="img/Stall.png" alt="Stall Image" class="stall-img">
+    <div>
+        Stall 1
+    </div>
+</div>
+        <!-- Add more stalls as needed -->
+    </div>
+
+</body>
+</html>
