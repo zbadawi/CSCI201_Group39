@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .register-page {
+            display: flex;
+            height: 100%;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        .form-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 50%;
+            padding: 20px;
+            margin: auto; /* Center the form */
+        }
+
+        #signup-form {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .image-container {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        #rectangle {
+            width: 100%;
+            height: 100%;
+            background-color: #40db47;
+        }
+
+        #farmer {
+          width: 315px;
+	      height: 455px;
+	      top: 100px;
+	      position: absolute;
+	      left: 100px;
+        }
+
+        .login-text {
+            font-size: 16px;
+            font-family: "Inter", Helvetica;
+            font-weight: 400;
+            color: #000000;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #1f7a23;
+        }
+
+        .text-danger {
+            font-size: 14px;
+            color: red;
+            margin-top: 5px;
+        }
+
+        .btn {
+            border-radius: 20px;
+            padding: 10px 20px;
+            background-color: #1f7a23;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="register-page">
+        <div class="image-container">
+            <div id="rectangle"></div>
+            <img id="farmer" src="img/farmer.png" alt="Farmer Image">
+        </div>
+        <div class="form-container">
+            <h2>Please Fill out form to Register!!</h2>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="username" class="login-text">Username:</label>
+                    <input type="text" name="username" class="form-control" placeholder="Username" id="username">
+                    <small id="username-error" class="form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="login-text">Password:</label>
+                    <input type="password" name="password" class="form-control" placeholder="Password" id="password">
+                    <small id="password-error" class="form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password" class="login-text">Confirm Password:</label>
+                    <input type="password" name="confirm-password" class="form-control"
+                        placeholder="Confirm Password" id="confirm-password">
+                    <small id="confirm-password-error" class="form-text text-danger"></small>
+                </div>
+
+				<div class="form-group">
+					<label for="type" class="login-text">Account Type</label>
+	                <select name="type" class="form-control" id="type" default="Bird (Buyer)">
+					    <option value="Bird (Buyer)">Bird (Buyer)</option>
+					    <option value="Bee (Vendor)">Bee (Vendor)</option>
+					</select>
+				</div>
+
+                <button type="button" class="btn" onclick = "checkFieldsValid()">Register!</button>
+            </form>
+        </div>
+        <script>
+            function checkFieldsValid() {
+                var username = document.getElementById('username').value;
+                var password = document.getElementById('password').value;
+                var confirmPassword = document.getElementById('confirm-password').value;
+                
+                if (username.length < 6) {
+                    console.log("Too short!");
+                    document.getElementById('username-error').innerText = 'Username must be at least 6 characters.';
+                    return false;
+                }
+                
+                if (password.length < 8 || password !== confirmPassword) {
+					console.log("Too short (need 8 chars + 2  nums)!");
+                    document.getElementById('password-error').innerText = 'Password must be at least 8 characters and match Confirm Password.';
+                    return false;
+                }
+
+                var numCount = password.replace(/[^0-9]/g, "").length;
+                if (numCount < 2) {
+                    document.getElementById('password-error').innerText = 'Password must contain at least 2 numbers.';
+                    return false;
+                }
+				document.getElementById('username-error').innerText = '';
+				document.getElementById('password-error').innerText = '';
+
+                 document.getElementById('signup-form').submit()
+                
+                return true;
+            }
+        </script>
+    </div>
+</body>
+</html>
