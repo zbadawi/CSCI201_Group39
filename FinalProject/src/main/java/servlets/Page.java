@@ -1,8 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,25 +8,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class Page
+ * from browser, navigate to any page in the webapp directory
+ * Usage: localhost:8080/FinalProject/Page?page=<path to file>
  */
-@WebServlet("/login")
-public class Login extends HttpServlet {
+@WebServlet("/Page")
+public class Page extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public Login() {
+    public Page() {
         super();
     }
     
-    /**
-     * Sends the client to farm_login.html
-     * */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		request.getRequestDispatcher("farm_login.html").forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		String pagePath = request.getParameter("page");
+		request.getRequestDispatcher(pagePath).forward(request, response);
 	}
 }
