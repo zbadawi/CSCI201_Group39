@@ -6,7 +6,6 @@
     of a file called "sql_username_and_password" in this directory
    
      Example:
-     
     	root
     	password
 */
@@ -14,37 +13,34 @@
 CREATE SCHEMA BirdsAndBees;
 
 CREATE TABLE BirdsAndBees.Users(
-	userID int PRIMARY KEY AUTO_INCREMENT,
+	user_id int PRIMARY KEY AUTO_INCREMENT,
     username varchar(45) UNIQUE NOT NULL,
     password varchar(45) NOT NULL,
-    accountType int NOT NULL, # 0 for buyers, 1 for vendors
-    currentBalance int,
-    currentProfit int,
-    productsPurchased int
+    account_type int NOT NULL, # 0 for buyers, 1 for vendors
+    current_balance int,
+    current_profit int,
+    products_purchased int
 );
 
 CREATE TABLE BirdsAndBees.Products(
-	productID int PRIMARY KEY AUTO_INCREMENT,
+	product_id int PRIMARY KEY AUTO_INCREMENT,
     name varchar(45) NOT NULL,
     price double NOT NULL,
-    vendorID int NOT NULL, # foreign key, references Users.userID
-    image text,
-    quantityAvailable int,
-    FOREIGN KEY (vendorID) REFERENCES Users(userID)
+    vendor_id int NOT NULL, # foreign key, references Users.userID
+    image_url text,
+    quantity_available int,
+    FOREIGN KEY (vendor_id) REFERENCES Users(user_id)
 );
 
 CREATE TABLE BirdsAndBees.Carts(
-	userID int NOT NULL,
-    productID int NOT NULL,
+	user_id int NOT NULL,
+    product_id int NOT NULL,
     quantity int NOT NULL,
     purchased boolean,
-    FOREIGN KEY (userID) REFERENCES Users(userID),
-    FOREIGN KEY (productID) REFERENCES Products(productID)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
-
-
-
-
+# DROP SCHEMA BirdsAndBees;
 
 
