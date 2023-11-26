@@ -1,6 +1,14 @@
 /*
-	These are the commands to create the database schema 
+	These are the commands to create the database schema
     Run this script on your computer once to set it up.
+    
+    Make sure to include your username on the first line and password on the second line
+    of a file called "sql_username_and_password" in this directory
+   
+     Example:
+     
+    	root
+    	password
 */
 
 CREATE SCHEMA BirdsAndBees;

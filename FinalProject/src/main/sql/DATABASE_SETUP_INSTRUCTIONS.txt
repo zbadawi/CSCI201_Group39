@@ -1,0 +1,10 @@
+Run create.sql once on your computer to set up the database.
+
+Then create a file called "sql_username_and_password" in this folder (src/main/sql)
+and write your MySQL username on the first line and password on the second line.
+This makes sure we can each use a different SQL password because sql_username_and_password
+is added to .gitignore
+
+Example "sql_username_and_password":
+	root
+	password
