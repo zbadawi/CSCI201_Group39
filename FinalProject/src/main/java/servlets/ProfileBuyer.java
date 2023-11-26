@@ -24,7 +24,6 @@ public class ProfileBuyer extends HttpServlet {
      * Sends the client to farm_homepage.html
      * */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		request.getRequestDispatcher("farm_homepage.html").forward(request, response);
 	}
 
