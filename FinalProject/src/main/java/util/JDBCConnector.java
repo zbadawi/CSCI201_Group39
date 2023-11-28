@@ -19,6 +19,10 @@ public class JDBCConnector {
 	private static Connection connection = null;
 	private static String mySQLusername = null, mySQLpassword = null;
 	
+	/**
+	 * See src/main/sql/DATABASE_SETUP_INSTRUCTIONS.txt for how to setup the database
+	 * and get it to work on your computer with this code.
+	 */
 	public JDBCConnector() {
 		String filePath = "src/main/sql/sql_username_and_password";
 		try {
