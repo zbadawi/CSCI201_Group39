@@ -3,6 +3,7 @@ package util;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,14 +18,24 @@ import util.User;
 public class JDBCConnector {
 	
 	private static Connection connection = null;
-	private static String mySQLusername = null, mySQLpassword = null;
+	private static String mySQLusername = "root", mySQLpassword = "password";
 	
 	/**
 	 * See src/main/sql/DATABASE_SETUP_INSTRUCTIONS.txt for how to setup the database
 	 * and get it to work on your computer with this code.
 	 */
 	public JDBCConnector() {
-		String filePath = "src/main/sql/sql_username_and_password";
+		String filePath = "can't figure this shit out";
+		
+		FileWriter writer;
+		try {
+			writer = new FileWriter("trace.txt");
+			writer.write("test");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("couldn't write trace file");
+		}
+		
 		try {
 			
 			if (mySQLusername == null || mySQLpassword == null) {				

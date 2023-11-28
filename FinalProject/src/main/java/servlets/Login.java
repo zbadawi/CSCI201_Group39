@@ -36,8 +36,12 @@ public class Login extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		
+		System.out.println("read username: " + username);
+		System.out.println("read password: " + password);
 		
 		JDBCConnector db = new JDBCConnector();
 		int user_id = db.loginUser(username, password);
