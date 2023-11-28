@@ -3,6 +3,7 @@ package util;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,10 +18,24 @@ import util.User;
 public class JDBCConnector {
 	
 	private static Connection connection = null;
-	private static String mySQLusername = null, mySQLpassword = null;
+	private static String mySQLusername = "root", mySQLpassword = "password";
 	
+	/**
+	 * See src/main/sql/DATABASE_SETUP_INSTRUCTIONS.txt for how to setup the database
+	 * and get it to work on your computer with this code.
+	 */
 	public JDBCConnector() {
-		String filePath = "src/main/sql/sql_username_and_password";
+		String filePath = "can't figure this shit out";
+		
+		FileWriter writer;
+		try {
+			writer = new FileWriter("trace.txt");
+			writer.write("test");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("couldn't write trace file");
+		}
+		
 		try {
 			
 			if (mySQLusername == null || mySQLpassword == null) {				
@@ -124,6 +139,32 @@ public class JDBCConnector {
 		}
 		return status;
 	}
+	
+	/**
+	 * Returns a User object with all user info
+	 */
+	public User getUserInfo(int user_id) {
+		User user = new User();
+		
+		try {
+			String sql = "SELECT * FROM Users WHERE user_id=?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, user_id);
+			ResultSet results = statement.executeQuery();
+			results.next();
+			user = new User(results.getInt(1),
+							results.getString(2),
+							results.getString(3),
+							results.getInt(4),
+							results.getDouble(5),
+							results.getDouble(6),
+							results.getInt(7));
+		}
+		catch (SQLException e) {
+			System.out.println("SQLException in getUserInfo(" + user_id + "): " + e.getMessage());
+		}
+		return user;
+	}
 
 	/**
 	 * Returns the user's balance, or -1 if error
@@ -225,6 +266,35 @@ public class JDBCConnector {
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setInt(1, vendor_id);
 			
+			ResultSet results = statement.executeQuery();
+			
+			while (results.next()) {
+				Product p = new Product(results.getInt(1),
+										results.getString(2),
+										results.getDouble(3),
+										results.getInt(4),
+										results.getString(5),
+										results.getInt(6));
+				
+				products.add(p);
+			}
+		}
+		catch (SQLException e) {
+			System.out.println("SQLException occurred: " + e.getMessage());
+		}
+		
+		return products;
+	}
+	
+	/**
+	 * Returns list of all products (empty if none)
+	 */
+	public List<Product> getAllProducts() {
+		List<Product> products = new ArrayList<Product>();
+		
+		try {
+			String sql = "SELECT * FROM Products";
+			PreparedStatement statement = connection.prepareStatement(sql);			
 			ResultSet results = statement.executeQuery();
 			
 			while (results.next()) {
