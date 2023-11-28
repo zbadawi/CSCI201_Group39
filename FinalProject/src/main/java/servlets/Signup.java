@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,10 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
+import util.JDBCConnector;
+import util.User;
+
 /**
  * Servlet implementation class Home
  */
-@WebServlet("/signup.html")
+@WebServlet("/signup")
 public class Signup extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -30,7 +36,35 @@ public class Signup extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		int account_type = Integer.parseInt(request.getParameter("account_type"));
 		
+		
+		System.out.println("read username: " + username);
+		System.out.println("read password: " + password);
+		System.out.println("read account_type: " + account_type);
+		
+		JDBCConnector db = new JDBCConnector();
+		int status = db.insertNewUser(new User(username, password, account_type));
+		
+		PrintWriter out = response.getWriter();
+		
+		if (status < 0) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			String error = "Username already exists";
+			out.print(error);
+			out.flush();
+		}
+		else {
+			User user = db.getUserInfo(db.loginUser(username, password));
+			Gson gson = new Gson();
+			String userJSON = gson.toJson(user);
+			
+			response.setStatus(HttpServletResponse.SC_OK);
+			out.print(userJSON);
+			out.flush();
+		}
 		
 	}
 }

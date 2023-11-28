@@ -1,11 +1,5 @@
 Run create.sql once on your computer to set up the database. If create.sql changes,
 you'll need to drop the schema (last two lines of create.sql) and re-run create.sql
 
-Then create a file called "sql_username_and_password" in this folder (src/main/sql)
-and write your MySQL username on the first line and password on the second line.
-This makes sure we can each use a different SQL password because sql_username_and_password
-is added to .gitignore
-
-Example "sql_username_and_password":
-	root
-	password
+Then change the mySQLusername and mySQLpassword values in JDBCConnector.java to your
+mySQL username and password

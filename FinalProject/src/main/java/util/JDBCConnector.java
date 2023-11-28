@@ -25,39 +25,13 @@ public class JDBCConnector {
 	 * and get it to work on your computer with this code.
 	 */
 	public JDBCConnector() {
-		String filePath = "can't figure this shit out";
-		
-		FileWriter writer;
-		try {
-			writer = new FileWriter("trace.txt");
-			writer.write("test");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("couldn't write trace file");
-		}
 		
 		try {
-			
-			if (mySQLusername == null || mySQLpassword == null) {				
-				BufferedReader configReader = new BufferedReader(new FileReader(filePath));
-				mySQLusername = configReader.readLine();
-				mySQLpassword = configReader.readLine();
-			}
-			
 			if (connection == null) {				
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				connection = DriverManager.getConnection("jdbc:mysql://localhost/BirdsAndBees?user=" + mySQLusername + "&password=" + mySQLpassword);
 				System.out.println("Successfully connected to the database");
 			}
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException: couldn't find config file at " + filePath + " : " + e.getMessage());
-			mySQLusername = null;
-			mySQLpassword = null;
-		} catch (IOException e) {
-			System.out.println("Couldn't read username or password from " + filePath + " : " + e.getMessage());
-			mySQLusername = null;
-			mySQLpassword = null;
 		} catch (ClassNotFoundException e) {
 			System.out.println("Couldn't read MySQL Driver class. Make sure the JAR is included in webapp/WEB-INF/lib : " + e.getMessage());
 		} catch (SQLException e) {

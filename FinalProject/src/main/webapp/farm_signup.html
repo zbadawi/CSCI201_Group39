@@ -138,9 +138,9 @@
 
 				<div class="form-group">
 					<label for="type" class="login-text">Account Type</label>
-	                <select name="type" class="form-control" id="type" default="Bird (Buyer)">
-					    <option value="Bird (Buyer)">Bird (Buyer)</option>
-					    <option value="Bee (Vendor)">Bee (Vendor)</option>
+	                <select name="type" class="form-control" id="type" default="0">
+					    <option value="0">Bird (Buyer)</option>
+					    <option value="1">Bee (Vendor)</option>
 					</select>
 				</div>
 
@@ -211,11 +211,14 @@
 		function submitForm(event) {
 			const username = document.querySelector("#username").value.trim();
 			const password = document.querySelector("#password").value.trim();
+			const account_type = document.querySelector("#type").value;
+			
 
 			// Construct URL parameters
 			const params = new URLSearchParams();
 			params.append('username', username);
 			params.append('password', password);
+			params.append('account_type', account_type);
 
 			// Construct URL with parameters
 			const url = "signup?" + params.toString();
@@ -226,10 +229,16 @@
 			})
 				.then(response => {
 					if (response.ok) {
-						// If login is successful, redirect to homepage
-						window.location.href = "farm_signup_confirmation.html";
+						// If login is successful, store user in sessionStorage and redirect to homepage
+						response.json().then(data => {
+							sessionStorage.setItem('user', JSON.stringify(data))
+						});
+						window.location.href = "farm_homepage.html";
 					} else {
 						// Handle unsuccessful login (e.g., show an error message)
+						response.text().then(data => {
+							document.querySelector('#username-error').innerHTML = data;
+						});
 						console.error("Login failed.");
 						event.preventDefault();
 					}
