@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import util.JDBCConnector;
+
 /**
  * Servlet implementation class Login
  */
@@ -29,6 +31,11 @@ public class Login extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		JDBCConnector db = new JDBCConnector();
+		int user_id = db.loginUser(username, password);
+		
 	}
 }
