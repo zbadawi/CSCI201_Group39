@@ -1,8 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,24 +8,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Home
+ * Servlet implementation class Cart
  */
-@WebServlet("/buyer")
-public class ProfileBuyer extends HttpServlet {
+@WebServlet("/Cart")
+public class Cart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public ProfileBuyer() {
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Cart() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
-    /**
-     * Sends the client to farm_homepage.html
-     * */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("farm_homepage.html").forward(request, response);
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String action = request.getParameter("action");
+		int product_id = Integer.parseInt(request.getParameter("product_id"));
+		
+		
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
 }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Home
  */
-@WebServlet("/home.html")
+@WebServlet("/home")
 public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -24,7 +24,6 @@ public class Home extends HttpServlet {
      * Sends the client to farm_homepage.html
      * */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		request.getRequestDispatcher("farm_homepage.html").forward(request, response);
 	}
 
