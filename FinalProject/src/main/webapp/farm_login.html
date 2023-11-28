@@ -4,15 +4,18 @@
   <link rel="stylesheet" href="style.css"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <style>
-  .login-page {
-    width: 100vw; /* Full width of the viewport */
-    height: 100vh; /* Full height of the viewport */
+  #login-page {
+    display: flex;
+    overflow-x: hidden;
   }
   #header {
     position: relative;
     display: flex;
     align-items: left;
     margin-top: 50px;
+  }
+  #main-text {
+    margin-top: 40px;
   }
   h1 {
     position: relative;
@@ -25,7 +28,7 @@
     position: relative;
     font-size: 1.5em;
     font-family: 'Josefin Sans', sans-serif;
-    padding-left: 150px;
+    /* padding-left: 150px; */
   }
   .login-text {
     font-size: 1em;
@@ -34,8 +37,9 @@
   }
   #logo {
     position: absolute;
-    width: 100px;
+    width: 130px;
     height: auto;
+    margin-top: 35px;
     margin-left: 20px;
   }
   #farmer {
@@ -43,18 +47,15 @@
     height: 455px;
     top: 100px;
     position: absolute;
-    left: 100px;
+    right: 100px;
   }
   #rectangle {
     position: absolute;
-    width: 35vw; /* Adjusted width */
-    height: 100vh; /* Full height */
+    width: 35vw;
+    height: 100%;
     top: 0;
-    left: 66vw; /* Adjusted left position */
+    right: 0;
     background-color: #40DB47;
-  }
-  #login-form {
-    position: absolute;
   }
   .form-group {
     position: relative;
@@ -65,48 +66,113 @@
     padding: 10px 20px;
     background-color: #259489;
   }
+  #dont-have-an {
+    margin-top: 50px;
+    font-size: 1.15em;
+  }
+ 
   </style>
 </head>
 <body>
-  <div class="login-page">
+  <div id="login-page" class="row">
     <div id="rectangle"><img id="farmer" src="img/farmer.png"/></div>
-    <div id="header">
-      <h1>Birds and Bees Farmer's Market</h1>
-      <img id="logo" src="SmallerGraphics/logo.png"/>
-    </div>
-    
-    <h2>Welcome Back!<h2>
-
-    <form id="login-form">
-      <div class="form-group row">
-        <label for="username" class="login-text col-form-label">Username:</label>
-        <div>
-          <input type="text" name="username" class="form-control" placeholder="Username" id="username">
-
-          <small id="username-error" class="form-text text-danger"></small>
+    <img id="logo" src="SmallerGraphics/logo.png"/>
+      <div id="header" class="row offset-1">
+        <h1>Birds and Bees Farmer's Market</h1>
+      </div>
+    <div class="row">
+      <div id="main-text" class="col-4 offset-1">
+        <h2>Welcome Back!</h2>
+  
+        <div class="col-12">
+          <form id="login-form" method="POST" action="Login">
+            <div class="form-group row">
+              <label for="username" class="login-text col-form-label">Username:</label>
+              <div>
+                <input type="text" name="username" class="form-control" placeholder="Username" id="username">
+      
+                <small id="username-error" class="form-text text-danger"></small>
+              </div>
+            </div> <!-- #username .form-group -->
+      
+            <div class="form-group row">
+              <label for="password" class="login-text col-form-label">Password:</label>
+              <div>
+                <input type="password" name="password" class="form-control" placeholder="Password" id="password">
+      
+                <small id="password-error" class="form-text text-danger"></small>
+              </div>
+            </div> <!-- #password .form-group -->                                                                             
+      
+            <div class="form-group row">
+              <div>
+                <button type="submit" class="btn custom-btn">Login</button>
+              </div> <!-- .col -->
+            </div> <!-- .form-group -->
+          </form> <!-- form -->
         </div>
-      </div> <!-- #username .form-group -->
-
-      <div class="form-group row">
-        <label for="password" class="login-text col-form-label">Password:</label>
-        <div>
-          <input type="text" name="password" class="form-control" placeholder="Password" id="password">
-
-          <small id="password-error" class="form-text text-danger"></small>
+        
+        <div id="dont-have-an">
+          <p>Don’t have an account?<br></p>
+          <p><a href="farm_signup.html">Register</a> or <a href="farm_homepage.html">Login as Guest</a></p>
         </div>
-      </div> <!-- #password .form-group -->                                                                             
 
-      <div class="form-group row">
-        <div>
-          <button type="submit" class="btn custom-btn">Login</button>
-        </div> <!-- .col -->
-      </div> <!-- .form-group -->
-    </form>
+      </div> <!-- #main-text -->
+    </div> <!-- .row -->
+  </div> <!-- #login-page -->
 
-    <!-- <div>
-      <span>Don’t have an account?<br/></span>
-      <span><a href="farm_signup.html">Register</a> or <a href="farm_homepage.html">Login as Guest</a></span>
-    </div> -->
-  </div> <!-- .login-page -->
+
+  <script src = "main.js"></script>
+
+	<script>
+		
+		/***** Form Events *****/
+	
+		document.querySelector("#login-form").onsubmit = function (event) {
+			console.log("form submitted")
+      //preventing default redirection
+      event.preventDefault();
+
+			let validForm = true
+
+			/* VALIDATION */
+
+			//validating username
+			const uname = document.querySelector("#username").value.trim()//fetch first name input and get rid of white spaces
+      
+      //checks for empty username
+			if (uname.length === 0){
+				validForm = false;
+				document.querySelector("#username-error").innerHTML = "Username cannot be empty."
+			}
+			//checks for capital letter
+			else if(!/[A-Z]/.test(uname)) {
+				validForm = false;
+				document.querySelector("#username-error").innerHTML = "Username must contain a capital letter."
+			} else {
+				document.querySelector("#username-error").innerHTML = ""
+			}
+
+			//validating password
+			const password = document.querySelector("#password").value.trim()
+			//checking if password is empty
+			if (/^$/.test(password)){
+				validForm = false;
+				document.querySelector("#password-error").innerHTML = "Password cannot be empty."
+			}
+			else {
+				document.querySelector("#password-error").innerHTML = ""
+			}
+
+			if (validForm) {
+        //prevents default redirection
+        event.preventDefault();
+
+        //redirect to homepage
+        window.location.href = "farm_homepage.html";
+      }
+		}
+	</script>
+
 </body> 
 </html>
