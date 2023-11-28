@@ -198,14 +198,43 @@
 			    }
 
                 if (validForm) {
-                    //prevents default redirection
+				// If the form is valid call the submitForm function to send to database and authenticate
+				submitForm(event);
+                } else {
+                    // If the form is not valid, prevent default form submission
                     event.preventDefault();
-
-                    //redirect to homepage
-                    window.location.href = "farm_signup_confirmation.html";
                 }
-
             }
+
+            /*FORM SENDING TO DATABASE*/
+		function submitForm(event) {
+			const username = document.querySelector("#username").value.trim();
+			const password = document.querySelector("#password").value.trim();
+
+			// Construct URL parameters
+			const params = new URLSearchParams();
+			params.append('username', username);
+			params.append('password', password);
+
+			// Construct URL with parameters
+			const url = "signup?" + params.toString();
+
+			// Make the fetch request
+			fetch(url, {
+				method: "POST"
+			})
+				.then(response => {
+					if (response.ok) {
+						// If login is successful, redirect to homepage
+						window.location.href = "farm_homepage.html";
+					} else {
+						// Handle unsuccessful login (e.g., show an error message)
+						console.error("Login failed.");
+						event.preventDefault();
+					}
+				})
+			.catch(error => console.error("Error:", error));
+        }
         </script>
     </div>
 </body>
