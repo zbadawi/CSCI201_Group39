@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="globals.css" />
     <link rel="stylesheet" href="style.css" />
     <style>
         body, html {
@@ -10,32 +9,32 @@
             height: 100%;
         }
 
-        .register-page {
+        #register-page {
             display: flex;
-            height: 100%;
-            background-color: #ffffff;
-            overflow: hidden;
-        }
-
-        .form-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            max-width: 50%;
-            padding: 20px;
-            margin: auto; /* Center the form */
-        }
-
-        #signup-form {
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .image-container {
-            flex: 1;
+            height: 100%;
             overflow: hidden;
+        }
+
+        #image-container {
+            width: 35vw;
+            height: 100%;
+            float: left;
+        }
+
+        #header {
+            position: relative;
+            display: flex;
+            align-items: right;
+            margin-top: 50px;
+        }
+
+        #logo {
+            width: 100px;
+            height: auto;
+            display: block;
+            margin-right: 20px
         }
 
         #rectangle {
@@ -52,11 +51,26 @@
 	      left: 100px;
         }
 
+        #form-container {
+            float: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 50%;
+            padding: 20px;
+            margin: auto;
+        }
+
+        #signup-form {
+            width: 100%;
+            max-width: 300px;
+        }
+
         .login-text {
-            font-size: 16px;
-            font-family: "Inter", Helvetica;
-            font-weight: 400;
-            color: #000000;
+            font-size: 1em;
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 300;
         }
 
         .form-control {
@@ -82,18 +96,26 @@
             border: none;
         }
         
+        p {
+            font-size: 1.2em;
+        }
         
     </style>
 </head>
 <body>
-    <div class="register-page">
-        <div class="image-container">
+    <div id="register-page">
+        <div id="image-container">
             <div id="rectangle"></div>
             <img id="farmer" src="img/farmer.png" alt="Farmer Image">
         </div>
-        <div class="form-container">
-            <h2>Please Fill out form to Register!!</h2>
-            <form id="signup-form">
+        
+        <div id="form-container">
+            <div id="header" class="row">
+                <img id="logo" src="SmallerGraphics/logo.png"/>
+                <h1>Birds & Bees Farmer's Market</h1>
+            </div>
+            <h2>Please Fill out form to Register!</h2>
+            <form id="signup-form" method="POST" action="signup">
                 <div class="form-group">
                     <label for="username" class="login-text">Username:</label>
                     <input type="text" name="username" class="form-control" placeholder="Username" id="username">
@@ -121,38 +143,68 @@
 					</select>
 				</div>
 
-                <button type="button" class="btn" onclick = "checkFieldsValid()">Register!</button>
+                <button type="submit" class="btn custom-btn">Register</button>
             </form>
+
+            <div>
+                <p>Don’t want to register?<br></p>
+                <p><a href="farm_homepage.html">Login as Guest</a></p>
+            </div>
         </div>
+        
+        <script src = "scripts/signup_validation.js"></script>
+
+
         <script>
-            function checkFieldsValid() {
-                var username = document.getElementById('username').value;
-                var password = document.getElementById('password').value;
-                var confirmPassword = document.getElementById('confirm-password').value;
+
+            document.querySelector("#signup-form").onsubmit = function (event) {
+			    console.log("form submitted")
+                //preventing default redirection
+                event.preventDefault();
+
+                let validForm = true
+
+			    /* VALIDATION */
+                let username = document.getElementById('username').value;
+                let password = document.getElementById('password').value;
+                let confirmPassword = document.getElementById('confirm-password').value;
                 
                 if (username.length < 6) {
-                    console.log("Too short!");
                     document.getElementById('username-error').innerText = 'Username must be at least 6 characters.';
-                    return false;
+                    validForm = false;
+                }
+                //checks for capital letter
+                else if(!/[A-Z]/.test(username)) {
+                    validForm = false;
+                    document.querySelector("#username-error").innerHTML = "Username must contain a capital letter."
+                } else {
+                    document.querySelector("#username-error").innerHTML = ""
                 }
                 
-                if (password.length < 8 || password !== confirmPassword) {
-					console.log("Too short (need 8 chars + 2  nums)!");
-                    document.getElementById('password-error').innerText = 'Password must be at least 8 characters and match Confirm Password.';
-                    return false;
+                if (password.length < 7) {
+                    validForm = false;
+                    document.getElementById('password-error').innerText = 'Password must be at least 8 characters long.';
+                }
+                else if (password !== confirmPassword) {
+                    validForm = false;
+				    document.querySelector("#password-error").innerHTML = "Passwords do not match."
+                }
+                else if (!isValidPassword(password)){
+				    validForm = false;
+				    document.querySelector("#password-error").innerHTML = "Insecure password. Password must contain at least one: uppercase character, lowercase character, number, and special character."
+			    }
+                else {
+				    document.querySelector("#password-error").innerHTML = ""
+			    }
+
+                if (validForm) {
+                    //prevents default redirection
+                    event.preventDefault();
+
+                    //redirect to homepage
+                    window.location.href = "farm_signup_confirmation.html";
                 }
 
-                var numCount = password.replace(/[^0-9]/g, "").length;
-                if (numCount < 2) {
-                    document.getElementById('password-error').innerText = 'Password must contain at least 2 numbers.';
-                    return false;
-                }
-				document.getElementById('username-error').innerText = '';
-				document.getElementById('password-error').innerText = '';
-
-                 document.getElementById('signup-form').submit()
-                
-                return true;
             }
         </script>
     </div>

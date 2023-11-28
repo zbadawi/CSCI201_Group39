@@ -3,41 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farmer's Market Place</title>
+    <link rel="stylesheet" href="style.css"/>
+
+    <title>Birds & Bees Market Place</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        .header {
+        #nav {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
+
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            margin: 0;
+
+            z-index: 1;
+            list-style-type: none;
+        }
+
+        #nav li {
+            background-color: #85e288;
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        #nav li:hover {
+            background-color: rgb(7, 118, 11);
+        }
+
+        #nav li:hover > ul {
+            display: block;
+        }
+
+        #nav a {
+            text-decoration: none; /* gets rid of hyperlink underline */
+            color: #FfffF2;
+            display: block;
+
+            text-align: center;
+            line-height: 50px; /* we wouldve used padding if we didnt know this was the line height*/
+            border-bottom: 2px solid #FFF; /*invisible line that holds space for the hover border*/
+        }
+
+        #nav a:hover { /*change anchor tag in nav when I hover over it*/
+            border-bottom: 2px solid rgb(244, 97, 18);
+            color: #FFF;
+        }
+
+        #nav ul {
+            list-style: none;
+            width: 100%;
+            position: absolute;
+            display: none;
+        }
+
+        #nav li:hover > ul {
+            display: block;
+        }
+
+        #active-nav {
+            background-color: rgb(96, 137, 181)
         }
 
         .header img {
             height: 50px;
-        }
-
-        .header button {
-            background-color: white;
-            color: #4CAF50;
-            border: none;
-            padding: 10px 20px;
-            text-transform: uppercase;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .header button:hover {
-            background-color: #45a049;
         }
 
         .marketplace-image {
@@ -52,80 +89,133 @@
             margin: 20px 0;
         }
 
-        .stalls {
+        .card-container{
+			display: flex;
+			flex-wrap: wrap;
+  			justify-content: space-between;
+
+            font-size: 1.5em;
+		}
+
+		.card {
+		/* Add shadows to create the "card" effect */
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			transition: 0.3s;
+			height: auto;
+			width: 25%;
+			margin: 20px;
+            margin-top: 100px;
+            padding: 15px;
+		}
+
+		/* On mouse-over, add a deeper shadow */
+		.card:hover {
+		box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+		}
+
+		/* Add some padding inside the card container */
+		.card > .container {
+		    padding: 2px 16px;
+		}
+
+        .img-container {
             display: flex;
-            justify-content: space-around;
-            padding: 10px;
+            justify-content: center;
+            align-items: center;
+            width: 325px;
+			height: 325px;
+
+			overflow: hidden;
+			position: relative;
         }
 
-        .stall {
-            width: 150px;
-            height: 150px;
-            background-color: #f4f4f4;
-            border: 1px solid #ddd;
-            padding: 20px;
-            margin: 10px;
-            text-align: center;
-            line-height: 150px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+        .overlay-image {
+            display:block;
+            position: absolute;
+            width: 50%;
         }
 
-        .stall:hover {
-            transform: scale(1.05);
+        .stall-img {
+			display: block;
+			object-fit: cover;
+			height: 100%;
+		}
+
+        .marketplace-image{
+            height: 500px;
         }
-
-   .stall {
-    
-    align-items: center; /* Align vertically */
-
-
-}
-
-.stall-img {
-        width: 120px;
-    height: auto;
-}
-
-.marketplace-image{
-    height: 500px;
-}
-
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="img/logo.png" alt="Market Logo">
-        <div>
-            <button onclick="location.href='login.html'">Login</button>
-            <button onclick="location.href='signup.html'">Signup</button>
-        </div>
-    </div>
+    <ul id="nav">
+        <li><a id="active-nav" href="farm_homepage.html"> Marketplace</a></li>
+        <li><a href="farm_profile_vendor.html">Profile</a></li>
+        <li><a href="">Login/Register</a>
+            <ul>
+                <li><a href="farm_login.html">Login</a></li>
+                <li><a href="farm_signup.html">Register</a></li>
+            </ul>
+        </li>
+
+
+    </ul>
+    <!-- nav -->
 
     <img src="img/marketplace_home.png" alt="Farmer's Market" class="marketplace-image">
 
-    <h2 class="marketplace-header">Marketplace</h2>
+    <h2 class="marketplace-header">Birds & Bees Marketplace</h2>
 
-    <div class="stalls">
-        <!-- Example stalls -->
-<div class="stall" onclick="location.href='seller1.html'">
-    <img src="img/Stall.png" alt="Stall Image" class="stall-img">
-    <div>
-        Stall 1
-    </div>
-</div>
-<div class="stall" onclick="location.href='seller1.html'">
-    <img src="img/Stall.png" alt="Stall Image" class="stall-img">
-    <div>
-        Stall 1
-    </div>
-</div>
-<div class="stall" onclick="location.href='seller1.html'">
-    <img src="img/Stall.png" alt="Stall Image" class="stall-img">
-    <div>
-        Stall 1
-    </div>
-</div>
+    <div class="container">
+        <div class="row">
+			<div class="card-container">
+				<div class="card">
+                    <div class="img-container">
+                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+                        <img src="img/fruit1.png" alt="Overlay" class="overlay-image">
+                    </div>
+					
+					<div class="container">
+						<h4><b>Item Name</b></h4>
+				 	 	<p>Item Price</p>
+				  		<p>Item Seller</p>
+					</div>
+				</div>
+				<div class="card">
+					<div class="img-container">
+                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+                        <img src="img/fruit2.png" alt="Overlay" class="overlay-image">
+                    </div>
+					<div class="container">
+				  		<h4><b>Item Name</b></h4>
+				 	 	<p>Item Price</p>
+				  		<p>Item Seller</p>
+					</div>
+				</div>
+				<div class="card">
+					<div class="img-container">
+                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+                        <img src="img/fruit3.png" alt="Overlay" class="overlay-image">
+                    </div>
+					<div class="container">
+                        <h4><b>Item Name</b></h4>
+                        <p>Item Price</p>
+                        <p>Item Seller</p>
+					</div>
+				</div>
+				<div class="card">
+					<div class="img-container">
+                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+                        <img src="img/fruit4.png" alt="Overlay" class="overlay-image">
+                    </div>
+					<div class="container">
+                        <h4><b>Item Name</b></h4>
+                        <p>Item Price</p>
+                        <p>Item Seller</p>
+					</div>
+				</div>
+			</div> <!-- .card-container -->
+           
+		</div> <!-- .row -->
         <!-- Add more stalls as needed -->
     </div>
 

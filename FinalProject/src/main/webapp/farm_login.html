@@ -78,14 +78,14 @@
     <div id="rectangle"><img id="farmer" src="img/farmer.png"/></div>
     <img id="logo" src="SmallerGraphics/logo.png"/>
       <div id="header" class="row offset-1">
-        <h1>Birds and Bees Farmer's Market</h1>
+        <h1>Birds & Bees Farmer's Market</h1>
       </div>
     <div class="row">
       <div id="main-text" class="col-4 offset-1">
         <h2>Welcome Back!</h2>
   
         <div class="col-12">
-          <form id="login-form" method="POST" action="Login">
+          <form id="login-form" method="POST" action="login">
             <div class="form-group row">
               <label for="username" class="login-text col-form-label">Username:</label>
               <div>
@@ -121,15 +121,12 @@
     </div> <!-- .row -->
   </div> <!-- #login-page -->
 
-
-  <script src = "main.js"></script>
-
 	<script>
 		
 		/***** Form Events *****/
 	
 		document.querySelector("#login-form").onsubmit = function (event) {
-			console.log("form submitted")
+			console.log("login form submitted")
       //preventing default redirection
       event.preventDefault();
 
@@ -145,11 +142,7 @@
 				validForm = false;
 				document.querySelector("#username-error").innerHTML = "Username cannot be empty."
 			}
-			//checks for capital letter
-			else if(!/[A-Z]/.test(uname)) {
-				validForm = false;
-				document.querySelector("#username-error").innerHTML = "Username must contain a capital letter."
-			} else {
+			else {
 				document.querySelector("#username-error").innerHTML = ""
 			}
 
