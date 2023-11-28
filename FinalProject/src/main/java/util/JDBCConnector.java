@@ -246,6 +246,35 @@ public class JDBCConnector {
 	}
 	
 	/**
+	 * Returns list of all products (empty if none)
+	 */
+	public List<Product> getAllProducts() {
+		List<Product> products = new ArrayList<Product>();
+		
+		try {
+			String sql = "SELECT * FROM Products";
+			PreparedStatement statement = connection.prepareStatement(sql);			
+			ResultSet results = statement.executeQuery();
+			
+			while (results.next()) {
+				Product p = new Product(results.getInt(1),
+										results.getString(2),
+										results.getDouble(3),
+										results.getInt(4),
+										results.getString(5),
+										results.getInt(6));
+				
+				products.add(p);
+			}
+		}
+		catch (SQLException e) {
+			System.out.println("SQLException occurred: " + e.getMessage());
+		}
+		
+		return products;
+	}
+	
+	/**
 	 * Adds product to user's cart (or adds quantity to the current quantity if the product is
 	 * already in user's cart). Returns 0 if success, -1 if error
 	 * */
