@@ -4,6 +4,9 @@
   <link rel="stylesheet" href="style.css"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <style>
+  body {
+    background-color: #FFFFF2;
+  }
   #login-page {
     display: flex;
     overflow-x: hidden;
@@ -157,14 +160,51 @@
 				document.querySelector("#password-error").innerHTML = ""
 			}
 
-			if (validForm) {
-        //prevents default redirection
-        event.preventDefault();
-
-        //redirect to homepage
-        window.location.href = "farm_homepage.html";
+      if (validForm) {
+        // If the form is valid call the submitForm function to send to database and authenticate
+        submitForm(event);
+      } else {
+          // If the form is not valid, prevent default form submission
+          event.preventDefault();
       }
+			// if (validForm) {
+      //   //prevents default redirection
+      //   event.preventDefault();
+
+      //   //redirect to homepage
+      //   window.location.href = "farm_homepage.html";
+      // }
 		}
+
+
+    /*FORM SENDING TO DATABASE*/
+    function submitForm(event) {
+      const username = document.querySelector("#username").value.trim();
+      const password = document.querySelector("#password").value.trim();
+
+      // Construct URL parameters
+      const params = new URLSearchParams();
+      params.append('username', username);
+      params.append('password', password);
+
+      // Construct URL with parameters
+      const url = "/login?" + params.toString();
+
+      // Make the fetch request
+      fetch(url, {
+          method: "POST"
+      })
+      .then(response => {
+        if (response.ok) {
+            // If login is successful, redirect
+            window.location.href = "farm_homepage.html";
+        } else {
+            // Handle unsuccessful login (e.g., show an error message)
+            console.error("Login failed.");
+            event.preventDefault();
+        }
+      })
+      .catch(error => console.error("Error:", error));
 	</script>
 
 </body> 
