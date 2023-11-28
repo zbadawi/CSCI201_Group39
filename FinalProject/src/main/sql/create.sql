@@ -17,9 +17,9 @@ CREATE TABLE BirdsAndBees.Users(
     username varchar(45) UNIQUE NOT NULL,
     password varchar(45) NOT NULL,
     account_type int NOT NULL, # 0 for buyers, 1 for vendors
-    current_balance int,
-    current_profit int,
-    products_purchased int
+    current_balance double DEFAULT 0,
+    current_profit double DEFAULT 0,
+    products_purchased int DEFAULT 0
 );
 
 CREATE TABLE BirdsAndBees.Products(
@@ -28,7 +28,7 @@ CREATE TABLE BirdsAndBees.Products(
     price double NOT NULL,
     vendor_id int NOT NULL, # foreign key, references Users.userID
     image_url text,
-    quantity_available int,
+    quantity_available int NOT NULL,
     FOREIGN KEY (vendor_id) REFERENCES Users(user_id)
 );
 
@@ -41,6 +41,9 @@ CREATE TABLE BirdsAndBees.Carts(
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
-# DROP SCHEMA BirdsAndBees;
+CREATE UNIQUE INDEX unique_cart_item ON BirdsAndBees.Carts (user_id, product_id, purchased);
+
+#DROP INDEX unique_cart_item ON BirdsAndBees.Carts;
+#DROP SCHEMA BirdsAndBees;
 
 
