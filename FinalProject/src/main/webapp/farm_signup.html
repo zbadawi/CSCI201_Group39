@@ -137,9 +137,9 @@
 
 				<div class="form-group">
 					<label for="type" class="login-text">Account Type</label>
-	                <select name="type" class="form-control" id="type" default="Bird (Buyer)">
-					    <option value="Bird (Buyer)">Bird (Buyer)</option>
-					    <option value="Bee (Vendor)">Bee (Vendor)</option>
+	                <select name="type" class="form-control" id="type" default="0">
+					    <option value="0">Bird (Buyer)</option>
+					    <option value="1">Bee (Vendor)</option>
 					</select>
 				</div>
 
@@ -210,11 +210,14 @@
 		function submitForm(event) {
 			const username = document.querySelector("#username").value.trim();
 			const password = document.querySelector("#password").value.trim();
+			const account_type = document.querySelector("#type").value;
+			
 
 			// Construct URL parameters
 			const params = new URLSearchParams();
 			params.append('username', username);
 			params.append('password', password);
+			params.append('account_type', account_type);
 
 			// Construct URL with parameters
 			const url = "signup?" + params.toString();
