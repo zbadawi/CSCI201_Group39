@@ -128,6 +128,32 @@ public class JDBCConnector {
 		}
 		return status;
 	}
+	
+	/**
+	 * Returns a User object with all user info
+	 */
+	public User getUserInfo(int user_id) {
+		User user = new User();
+		
+		try {
+			String sql = "SELECT * FROM Users WHERE user_id=?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, user_id);
+			ResultSet results = statement.executeQuery();
+			results.next();
+			user = new User(results.getInt(1),
+							results.getString(2),
+							results.getString(3),
+							results.getInt(4),
+							results.getDouble(5),
+							results.getDouble(6),
+							results.getInt(7));
+		}
+		catch (SQLException e) {
+			System.out.println("SQLException in getUserInfo(" + user_id + "): " + e.getMessage());
+		}
+		return user;
+	}
 
 	/**
 	 * Returns the user's balance, or -1 if error
