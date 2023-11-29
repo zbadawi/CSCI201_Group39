@@ -38,12 +38,19 @@ public class Signup extends HttpServlet {
 		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		int account_type = Integer.parseInt(request.getParameter("account_type"));
+		String account_type_string = request.getParameter("account_type");
+		int account_type = 0;
+		
+		if (account_type_string != null && !account_type_string.isEmpty()) {
+			account_type = Integer.parseInt(account_type_string);
+		} else {
+			account_type = 0; //default buyer type
+		}
 		
 		
 		System.out.println("read username: " + username);
 		System.out.println("read password: " + password);
-		System.out.println("read account_type: " + account_type);
+		System.out.println("read account-type: " + account_type);
 		
 		JDBCConnector db = new JDBCConnector();
 		int status = db.insertNewUser(new User(username, password, account_type));

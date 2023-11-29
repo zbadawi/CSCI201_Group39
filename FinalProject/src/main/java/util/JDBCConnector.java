@@ -18,7 +18,7 @@ import util.User;
 public class JDBCConnector {
 	
 	private static Connection connection = null;
-	private static String mySQLusername = "root", mySQLpassword = "password";
+	private static String mySQLusername = "root", mySQLpassword = "root";
 	
 	/**
 	 * See src/main/sql/DATABASE_SETUP_INSTRUCTIONS.txt for how to setup the database
@@ -33,10 +33,12 @@ public class JDBCConnector {
 				System.out.println("Successfully connected to the database");
 			}
 		} catch (ClassNotFoundException e) {
-			System.out.println("Couldn't read MySQL Driver class. Make sure the JAR is included in webapp/WEB-INF/lib : " + e.getMessage());
-		} catch (SQLException e) {
-			System.out.println("SQLException occurred when trying to connect to the database: " + e.getMessage());
-		}
+	        System.out.println("Couldn't read MySQL Driver class. Make sure the JAR is included in webapp/WEB-INF/lib: " + e.getMessage());
+	        e.printStackTrace();
+	    } catch (SQLException e) {
+	        System.out.println("SQLException occurred when trying to connect to the database: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 		
 	}
 	
