@@ -1,223 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css"/>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css" />
 
-    <title>Birds & Bees Market Place</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+	<title>Birds & Bees Market Place</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
-        #nav {
-            display: flex;
-            justify-content: space-between;
-            background-color: #4CAF50;
+		#nav {
+			display: flex;
+			justify-content: space-between;
+			background-color: #4CAF50;
 
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            right: 0px;
-            margin: 0;
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			right: 0px;
+			margin: 0;
 
-            z-index: 1;
-            list-style-type: none;
-        }
+			z-index: 1;
+			list-style-type: none;
+		}
 
-        #nav li {
-            background-color: #85e288;
-            text-align: center;
-            position: relative;
-            flex: 1;
-        }
+		#nav li {
+			background-color: #85e288;
+			text-align: center;
+			position: relative;
+			flex: 1;
+		}
 
-        #nav li:hover {
-            background-color: rgb(7, 118, 11);
-        }
+		#nav li:hover {
+			background-color: rgb(7, 118, 11);
+		}
 
-        #nav li:hover > ul {
-            display: block;
-        }
+		#nav li:hover>ul {
+			display: block;
+		}
 
-        #nav a {
-            text-decoration: none; /* gets rid of hyperlink underline */
-            color: #FfffF2;
-            display: block;
+		#nav a {
+			text-decoration: none;
+			/* gets rid of hyperlink underline */
+			color: #FfffF2;
+			display: block;
 
-            text-align: center;
-            line-height: 50px; /* we wouldve used padding if we didnt know this was the line height*/
-            border-bottom: 2px solid #FFF; /*invisible line that holds space for the hover border*/
-        }
+			text-align: center;
+			line-height: 50px;
+			/* we wouldve used padding if we didnt know this was the line height*/
+			border-bottom: 2px solid #FFF;
+			/*invisible line that holds space for the hover border*/
+		}
 
-        #nav a:hover { /*change anchor tag in nav when I hover over it*/
-            border-bottom: 2px solid rgb(244, 97, 18);
-            color: #FFF;
-        }
+		#nav a:hover {
+			/*change anchor tag in nav when I hover over it*/
+			border-bottom: 2px solid rgb(244, 97, 18);
+			color: #FFF;
+		}
 
-        #nav ul {
-            list-style: none;
-            width: 100%;
-            position: absolute;
-            display: none;
-        }
+		#nav ul {
+			list-style: none;
+			width: 100%;
+			position: absolute;
+			display: none;
+		}
 
-        #nav li:hover > ul {
-            display: block;
-        }
+		#nav li:hover>ul {
+			display: block;
+		}
 
-        #active-nav {
-            background-color: rgb(96, 137, 181)
-        }
+		#active-nav {
+			background-color: rgb(96, 137, 181)
+		}
 
-        .header img {
-            height: 50px;
-        }
+		.header img {
+			height: 50px;
+		}
 
-        .marketplace-image {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+		.marketplace-image {
+			width: 100%;
+			height: auto;
+			display: block;
+		}
 
-        .marketplace-header {
-            text-align: center;
-            font-size: 2em;
-            margin: 20px 0;
-        }
+		.marketplace-header {
+			text-align: center;
+			font-size: 2em;
+			margin: 20px 0;
+		}
 
-        .card-container{
+		.card-container {
 			display: flex;
 			flex-wrap: wrap;
-  			justify-content: space-between;
+			justify-content: space-between;
 
-            font-size: 1.5em;
+			font-size: 1.5em;
 		}
 
 		.card {
-		/* Add shadows to create the "card" effect */
-			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			/* Add shadows to create the "card" effect */
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 			transition: 0.3s;
 			height: auto;
 			width: 25%;
 			margin: 20px;
-            margin-top: 100px;
-            padding: 15px;
+			margin-top: 100px;
+			padding: 15px;
 		}
 
 		/* On mouse-over, add a deeper shadow */
 		.card:hover {
-		box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 		}
 
 		/* Add some padding inside the card container */
-		.card > .container {
-		    padding: 2px 16px;
+		.card>.container {
+			padding: 2px 16px;
 		}
 
-        .img-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 325px;
+		.img-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 325px;
 			height: 325px;
 
 			overflow: hidden;
 			position: relative;
-        }
+		}
 
-        .overlay-image {
-            display:block;
-            position: absolute;
-            width: 50%;
-        }
+		.overlay-image {
+			display: block;
+			position: absolute;
+			width: 50%;
+		}
 
-        .stall-img {
+		.stall-img {
 			display: block;
 			object-fit: cover;
 			height: 100%;
 		}
 
-        .marketplace-image{
-            height: 500px;
-        }
-    </style>
+		.marketplace-image {
+			height: 500px;
+		}
+	</style>
 </head>
+
 <body>
-    <ul id="nav">
-        <li><a id="active-nav" href="farm_homepage.html"> Marketplace</a></li>
-        <li><a href="farm_profile_vendor.html">Profile</a></li>
-        <li><a href="">Login/Register</a>
-            <ul>
-                <li><a href="farm_login.html">Login</a></li>
-                <li><a href="farm_signup.html">Register</a></li>
-            </ul>
-        </li>
+	<ul id="nav">
+		<li><a id="active-nav" href="farm_homepage.html"> Marketplace</a></li>
+		<li><a href="farm_profile_vendor.html">Profile</a></li>
+		<li><a href="">Login/Register</a>
+			<ul>
+				<li><a href="farm_login.html">Login</a></li>
+				<li><a href="farm_signup.html">Register</a></li>
+			</ul>
+		</li>
 
 
-    </ul>
-    <!-- nav -->
+	</ul>
+	<!-- nav -->
 
-    <img src="img/marketplace_home.png" alt="Farmer's Market" class="marketplace-image">
+	<img src="img/marketplace_home.png" alt="Farmer's Market" class="marketplace-image">
 
-    <h2 class="marketplace-header">Birds & Bees Marketplace</h2>
+	<h2 class="marketplace-header">Birds & Bees Marketplace</h2>
 
-    <div class="container">
-        <div class="row">
+	<div class="container">
+		<div class="row">
 			<div class="card-container">
 				<div class="card">
-                    <div class="img-container">
-                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
-                        <img src="img/fruit1.png" alt="Overlay" class="overlay-image">
-                    </div>
-					
+					<div class="img-container">
+						<img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+						<img src="img/fruit1.png" alt="Overlay" class="overlay-image">
+					</div>
+
 					<div class="container">
 						<h4><b>Item Name</b></h4>
-				 	 	<p>Item Price</p>
-				  		<p>Item Seller</p>
+						<p>Item Price</p>
+						<p>Item Seller</p>
 					</div>
 				</div>
 				<div class="card">
 					<div class="img-container">
-                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
-                        <img src="img/fruit2.png" alt="Overlay" class="overlay-image">
-                    </div>
+						<img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+						<img src="img/fruit2.png" alt="Overlay" class="overlay-image">
+					</div>
 					<div class="container">
-				  		<h4><b>Item Name</b></h4>
-				 	 	<p>Item Price</p>
-				  		<p>Item Seller</p>
+						<h4><b>Item Name</b></h4>
+						<p>Item Price</p>
+						<p>Item Seller</p>
 					</div>
 				</div>
 				<div class="card">
 					<div class="img-container">
-                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
-                        <img src="img/fruit3.png" alt="Overlay" class="overlay-image">
-                    </div>
+						<img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+						<img src="img/fruit3.png" alt="Overlay" class="overlay-image">
+					</div>
 					<div class="container">
-                        <h4><b>Item Name</b></h4>
-                        <p>Item Price</p>
-                        <p>Item Seller</p>
+						<h4><b>Item Name</b></h4>
+						<p>Item Price</p>
+						<p>Item Seller</p>
 					</div>
 				</div>
 				<div class="card">
 					<div class="img-container">
-                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
-                        <img src="img/fruit4.png" alt="Overlay" class="overlay-image">
-                    </div>
+						<img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+						<img src="img/fruit4.png" alt="Overlay" class="overlay-image">
+					</div>
 					<div class="container">
-                        <h4><b>Item Name</b></h4>
-                        <p>Item Price</p>
-                        <p>Item Seller</p>
+						<h4><b>Item Name</b></h4>
+						<p>Item Price</p>
+						<p>Item Seller</p>
 					</div>
 				</div>
 			</div> <!-- .card-container -->
-           
+
 		</div> <!-- .row -->
-        <!-- Add more stalls as needed -->
-    </div>
+		<!-- Add more stalls as needed -->
+	</div>
+
+	<script>
+
+		const cardContainer = document.querySelector(".card-container");
+		
+		const newCard = document.createElement('div');
+		newCard.classList.add('card');
+		
+		const mango = 'Mango';
+		newCard.innerHTML = `<div class="img-container">
+		                        <img src="img/stall.png" alt="Stall" style="width:100%" class="stall-img">
+		                        <img src="img/fruit1.png" alt="Overlay" class="overlay-image">
+		                    </div>
+							
+							<div class="container">
+								<h4><b>${mango}</b></h4>
+						 	 	<p>Item Price</p>
+						  		<p>Item Seller</p>
+							</div>`;
+							
+		cardContainer.append(newCard);
+
+	</script>
 
 </body>
+
 </html>
