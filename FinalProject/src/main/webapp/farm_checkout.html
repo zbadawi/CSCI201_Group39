@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
+	  <title>Checkout</title>
     <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/open-iconic@1.1.1/font/css/open-iconic-bootstrap.min.css" rel="stylesheet">
     <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
       #checkout-header {
         display: flex;
         align-items: center;
@@ -17,7 +25,37 @@
 
         background-color: #40db47;
       }
-      
+      h2 {
+        font-size: 2.5em;
+      }
+      .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      .cart-item-image {
+        max-width: 50px;
+        max-height: 50px;
+        margin-right: 10px;
+      }
+      .price {
+        margin-right: 10px;
+      }
+      .cart-remove {
+        cursor: pointer;
+        color: #CCC;
+        font-size: 20px;
+        /* margin-left: auto;
+        margin-right: 10px; */
+      }
+      .cart-remove:hover {
+        color: #dc3545;
+      }
+      .cart-remove:active {
+        color: #ba1323;
+      }
     </style>
   </head>
   <body>
@@ -25,17 +63,78 @@
       <li><a href="farm_homepage.html"> Marketplace</a></li>
       <li><a href="farm_profile_vendor.html">Profile</a></li>
       <li><a id="active-nav" href="farm_checkout.html">Cart</a></li>
-      <li><a href="">Login/Register</a>
+      <li><a href="farm_login.html">Login/Register</a>
           <ul>
               <li><a href="farm_login.html">Login</a></li>
               <li><a href="farm_signup.html">Register</a></li>
           </ul>
       </li>
+    </ul>
+    <!-- nav -->
 
+    <h1 id="checkout-header">Checkout</h1>
+    <div class="container">    
+      <div class="row mb-5">
+        <h2 class="col-12">Cart</h2>
+        
+        <div class="col-12 col-sm-8 mt-3">
+  
+          <button id="cart-delete-all" class="btn btn-outline-danger mb-3">Remove All</button>
+  
+          <ul id="cart-list" class="list-group">
+            <!-- <div class="product-container">
+              <li class="list-group-item cart-item">
+                <img src="img/fruit1.png" alt="Product Image" class="cart-item-image">
+                <span>Mango</span>
+                <span class="price"><b>$5</b></span>
+                <span class="cart-remove oi oi-circle-x" title="Remove"></span>
+              </li>
+            </div>
+            
+            <div class="product-container">
+              <li class="list-group-item cart-item">
+              <img src="img/fruit2.png" alt="Product Image" class="cart-item-image">
+                <span>Grapes</span>
+                <span class="price"><b>$5</b></span>
+                <span class="cart-remove oi oi-circle-x" title="Remove"></span>
+              </li>
+            </div>
+            
+            <div class="product-container">
+              <li class="list-group-item cart-item">
+              <img src="img/fruit3.png" alt="Product Image" class="cart-item-image">
+                <span>Watermelon</span>
+                <span class="price"><b>$5</b></span>
+                <span class="cart-remove oi oi-circle-x" title="Remove"></span>
+              </li>
+            </div> -->
+            
+          </ul>
+  
+        </div> <!-- .col -->
+      </div> <!-- .row -->
 
-  </ul>
-  <!-- nav -->
-  <h2 id="checkout-header">Checkout</h2>
+      <h2 id="total-amount">Total: $0</h2>
+    </div> <!-- .container -->
+
+	 <script src = "scripts/addToCart.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+      const cart = localStorage.cart;
+      let cartArray = [];
+
+      if (cart) {
+          cartArray = JSON.parse(cart);
+
+          // Loop through array and create DOM elements on the checkout page
+          for (item of cartArray) {
+              addItem(item);
+          }
+
+          bindRemoveBtns(); // Allows us to remove items
+      }
+    });
+    </script>
 
   </body>
 </html>
