@@ -128,7 +128,7 @@
 		<h2 id="total-amount">Total: $0</h2>
 	</div> <!-- .container -->
 
-
+	<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="scripts/addToCart.js"></script>
 	<script>
 		function userLoggedIn() {
@@ -138,24 +138,26 @@
 		if (!userLoggedIn()) {
 			console.log('user not logged in, not showing cart');
 			document.querySelector('.container').innerHTML = `<h1>Please log in to view cart.</h1>`;
-		} /*else {
-			document.addEventListener('DOMContentLoaded', function () {
-				const cart = localStorage.cart;
-				let cartArray = [];
+		}
 
-				if (cart) {
-					cartArray = JSON.parse(cart);
-
-					// Loop through array and create DOM elements on the checkout page
-					for (item of cartArray) {
-						addItem(item);
-					}
-
-					bindRemoveBtns(); // Allows us to remove items
-				}
-			});
-		}*/
-
+		// get user cart from database and save in sessionStorage
+		$.ajax({
+			url: "Cart",
+			method: "POST",
+			data: {
+				user_id: JSON.parse(sessionStorage.user).user_id,
+				action: 'get'
+			},
+			success: function (data) {
+				renderPage(data);
+			},
+			error: function (xhr, status, error) {
+				// Handle unsuccessful login (e.g., show an error message)
+				$("#username-error").html(xhr.responseText);
+				console.error("couldn't get cart.");
+				event.preventDefault();
+			}
+		});
 
 	</script>
 

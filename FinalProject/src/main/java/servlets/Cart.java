@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,58 +21,67 @@ import util.Product;
 @WebServlet("/Cart")
 public class Cart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Cart() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public Cart() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String action = request.getParameter("action");
-		int product_id = Integer.parseInt(request.getParameter("product_id"));
 		int user_id = Integer.parseInt(request.getParameter("user_id"));
-		int quantity = Integer.parseInt(request.getParameter("quantity"));
-		
+
 		System.out.println("read action: " + action);
 		System.out.println("read user_id: " + user_id);
-		System.out.println("read product_id: " + product_id);
-		System.out.println("read quantity: " + quantity);
-		
+
 		JDBCConnector db = new JDBCConnector();
 		int status = 0;
-		
-		if (action.equals("add")) {
-			status = db.addProductToCart(user_id, product_id, quantity);
-		}
-		else {
-			status = db.removeProductFromCart(user_id, product_id);;
-		}
 		PrintWriter out = response.getWriter();
-		if (status < 0) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			String error = "Bad Add/Remove";
-			out.print(error);
+
+		if (action.equals("get")) {
+			List<Product> cart = db.getUserCart(user_id);
+			String cartJSON = new Gson().toJson(cart);
+			out.write(cartJSON);
 			out.flush();
-		}
-		else {
-			response.setStatus(HttpServletResponse.SC_OK);
+		} else {
+			int product_id = Integer.parseInt(request.getParameter("product_id"));
+			System.out.println("read product_id: " + product_id);
 			if (action.equals("add")) {
-				Gson gson = new Gson();
-				Product product = db.getProductInfo(product_id);
-				String productJSON = gson.toJson(product);
-				out.print(productJSON);
+
+				int quantity = Integer.parseInt(request.getParameter("quantity"));
+				System.out.println("read quantity: " + quantity);
+
+				status = db.addProductToCart(user_id, product_id, quantity);
+			} else {
+				status = db.removeProductFromCart(user_id, product_id);
 			}
-			else {
-				out.print("ok");
+
+			if (status < 0) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				String error = "Bad Add/Remove";
+				out.print(error);
+				out.flush();
+			} else {
+				response.setStatus(HttpServletResponse.SC_OK);
+				if (action.equals("add")) {
+					Gson gson = new Gson();
+					Product product = db.getProductInfo(product_id);
+					String productJSON = gson.toJson(product);
+					out.print(productJSON);
+				} else {
+					out.print("ok");
+				}
+				out.flush();
 			}
-			out.flush();
 		}
 	}
 

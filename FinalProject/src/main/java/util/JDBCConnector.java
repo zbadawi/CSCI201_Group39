@@ -330,7 +330,7 @@ public class JDBCConnector {
 		try {
 			String sql = "INSERT INTO Carts (user_id, product_id, quantity, purchased) "
 					   + "VALUES (?, ?, ?, ?) "
-					   + "ON DUPLICATE KEY UPDATE quantity = quantity + ?";
+					   + "ON DUPLICATE KEY UPDATE Carts.quantity = Carts.quantity + ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setInt(1, user_id);
 			statement.setInt(2, product_id);
@@ -341,6 +341,7 @@ public class JDBCConnector {
 		}
 		catch (SQLException e) {
 			System.out.println("SQLException: " + e.getMessage());
+			e.printStackTrace();
 			status = -1;
 		}
 		return status;
@@ -373,7 +374,7 @@ public class JDBCConnector {
 		List<Product> products = new ArrayList<Product>();
 		
 		try {
-			String sql = "SELECT p.product_id, p.name, p.price, p.vendor_id, p.image_url, Carts.quantity "
+			String sql = "SELECT p.product_id, p.name, p.price, p.vendor_id, p.image_url, c.quantity "
 					   + "FROM Products p JOIN Carts c ON p.product_id = c.product_id "
 					   + "WHERE c.user_id = ? AND c.purchased = 0";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -394,6 +395,7 @@ public class JDBCConnector {
 		}
 		catch (SQLException e) {
 			System.out.println("SQLException occurred: " + e.getMessage());
+			e.printStackTrace();
 		}
 		
 		return products;
@@ -603,6 +605,8 @@ public class JDBCConnector {
 //		System.out.println(db.addProductToCart(1, 7, 4));
 			
 //		System.out.println("Elapsed time: " + (endTime - startTime) + " ms");
+		
+		db.addProductToCart(1, 10, 10);
 
 	}
 }

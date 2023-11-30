@@ -58,7 +58,7 @@ public class Login extends HttpServlet {
 			User user = db.getUserInfo(user_id);
 			Gson gson = new Gson();
 			String userJSON = gson.toJson(user);
-			
+			System.out.println("sending user object: " + userJSON);
 			response.setStatus(HttpServletResponse.SC_OK);
 			out.print(userJSON);
 			out.flush();

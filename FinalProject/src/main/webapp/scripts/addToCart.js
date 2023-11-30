@@ -1,26 +1,42 @@
-// document.addEventListener('DOMContentLoaded', function() {
-const cart = localStorage.cart //taking cart string from storage
-let cartArray = [] //instatiating empty array
+function renderPage(cart) {
+	cart = JSON.parse(cart);
+	console.log('cart:', cart);
 
-const cartList = document.querySelector('#cart-list');
+	cart.forEach(item => {
+		addItem(item);
+	});
 
-if (cart) { //if cart already exists
-	cartArray = JSON.parse(cart) //resetting array to be array from storag
-	//loop through array and create DOM elements to display stored cartArray
-	for (item of cartArray) {
-		addItem(item)
-	}
 	bindRemoveBtns() //allows us to remove items
-	updateTotal(); // Update the total price
-}
+	updateTotal(); // Update the total price	
 
-document.querySelector('#cart-delete-all').onclick = function() {
-	document.querySelector('#cart-list').innerHTML = '';
-	//remove from localStorage
-	localStorage.cart = ''
+	document.querySelector('#cart-delete-all').onclick = function() {
+		document.querySelectorAll('.product-container').forEach(product => {
+			const p_id = product.id;
+			$.ajax({
+				url: 'Cart',
+				method: 'POST',
+				data: {
+					user_id: JSON.parse(sessionStorage.user).user_id,
+					action: 'remove',
+					product_id: p_id
+				},
+				success: function() {
+					product.remove();
+					updateTotal();
+				},
+				error: function(xhr, status, error) {
+					// Handle unsuccessful login (e.g., show an error message)
+					console.error(error);
+				}
+			});
+		});
+	}
 }
 
 function addItem(item) {
+	
+	console.log('adding item', item);
+	
 	// Create HTML elements.
 	const itemContainer = document.createElement('div')
 	const li = document.createElement('li');
@@ -28,26 +44,35 @@ function addItem(item) {
 	const spanRemove = document.createElement('span');
 	const spanItem = document.createElement('span');
 	const spanPrice = document.createElement('span');
+	const spanQuantity = document.createElement('span');
 	const priceBold = document.createElement('b');
 
 	// Add classes for new elements.
-	itemContainer.classList.add('product-container')
+	itemContainer.classList.add('product-container');
+	itemContainer.id = item.product_id;
 	li.classList.add('list-group-item', 'cart-item');
 	img.classList.add('cart-item-image');
 	spanPrice.classList.add('price');
+	priceBold.classList.add('price-bold');
+	spanQuantity.classList.add('span-quantity');
 	spanRemove.classList.add('cart-remove', 'oi', 'oi-circle-x');
 
 	// Set attributes and properties.
 	spanRemove.title = 'Remove';
 	spanItem.innerHTML = item.name;
-	img.src = 'img/' + item.image_url;
+	img.src = item.image_url;
 	img.alt = item.name + ' Product Image';
-	priceBold.innerHTML = item.price;
+	spanQuantity.innerHTML = item.quantity;
+	priceBold.innerHTML = '$' + item.price;
+
+	// append bold price to span price
+	spanPrice.appendChild(priceBold);
 
 	// Add elements to the list item.
 	li.appendChild(spanRemove);
 	li.appendChild(img);
 	li.appendChild(spanItem);
+	li.appendChild(spanQuantity);
 	li.appendChild(spanPrice);
 
 	//Add list item to the container
@@ -59,42 +84,45 @@ function addItem(item) {
 
 //adds remove buttons to everything in cart
 function bindRemoveBtns() {
-	const removeBtns = document.querySelectorAll('.cart-remove');
-	for (let i = 0; i < removeBtns.length; i++) {
-		removeBtns[i].onclick = function() {
+	document.querySelectorAll('.cart-remove').forEach(button => {
+		button.onclick = function() {
 
-			const item = this.nextElementSibling.innerHTML
-			const index = cartArray.indexOf(item) //finding index of item in cartArray
-			cartArray.splice(index, 1) //removing from array, slice(startIndex, numElementsRemove)
+			const p_id = button.parentNode.parentNode.id;
+			console.log('')
 
-			localStorage.cart = JSON.stringify(cartArray)
-
-			document.querySelector('#cart-list').remove();
-			updateTotal();
+			// remove product from database
+			$.ajax({
+				url: 'Cart',
+				method: 'POST',
+				data: {
+					user_id: JSON.parse(sessionStorage.user).user_id,
+					action: 'remove',
+					product_id: p_id
+				},
+				success: function() {
+					button.parentNode.remove();
+					updateTotal();
+				},
+				error: function(xhr, status, error) {
+					// Handle unsuccessful request (e.g., show an error message)
+					console.error(error);
+					event.preventDefault();
+				}
+			});	
 		} // END removeBtns[i].onclick
-	} // END for loop
+	}); // END for loop
 } // END bindRemoveBtns()
 
 //updates total price
 function updateTotal() {
-	const cart = localStorage.cart;
-	let cartArray = [];
-
-	if (cart) {
-		cartArray = JSON.parse(cart);
-
-		let total = 0;
-
-		// Iterate through the items in the cart
-		for (item of cartArray) {
-			// Assuming each item has a price property
-			const price = parseFloat(item.price);
-			total += price;
-		}
-
-		// Update the total in the HTML
-		const totalElement = document.querySelector('#total-amount');
-		totalElement.innerHTML = '$' + total.toFixed(2); // Assuming two decimal places
-	}
+	let total = 0;
+	
+	document.querySelectorAll('.cart-item').forEach(product => {
+		const price = product.querySelector('.price-bold');
+		const quantity = product.querySelector('.span-quantity');
+		total += Number(price.innerHTML.slice(1)) * Number(quantity.innerHTML);
+	});
+	
+	document.getElementById('total-amount').innerHTML = `Total: $${total}`;
 }
 // });

@@ -4,22 +4,22 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css" />
 	<script src="scripts/navbar.js" defer></script>
-	
-    <title>Birds and Bees Market Place</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        h2 {
-        	text-align: center;
-        }
+
+	<title>Birds and Bees Market Place</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		h2 {
+			text-align: center;
+		}
 
 		.header img {
 			height: 50px;
@@ -96,7 +96,7 @@
 </head>
 
 <body>
-    <ul id="nav">
+	<ul id="nav">
 		<li><a id="active-nav" href="farm_homepage.html"> Marketplace</a></li>
 		<li><a href="farm_profile_vendor.html">Profile</a></li>
 		<li><a href="farm_checkout.html">Cart</a></li>
@@ -106,12 +106,12 @@
 				<li><a href="farm_signup.html">Register</a></li>
 			</ul>
 		</li>
-	  </ul>
-	  <!-- nav -->
+	</ul>
+	<!-- nav -->
 
 	<img src="img/marketplace_home.png" alt="Farmer's Market" class="marketplace-image">
 
-    <h2 class="marketplace-header">Birds & Bees Marketplace</h2>
+	<h2 class="marketplace-header">Birds & Bees Marketplace</h2>
 
 	<div class="container">
 		<div class="row">
@@ -180,6 +180,27 @@
 
 			// Add the selected product to the cart
 			existingCart.push(product);
+			
+			// send request to server to add item to cart.
+			$.ajax({
+				url: "Cart",
+				method: "POST",
+				data: {
+					action: 'add',
+					product_id: product.product_id,
+					user_id: JSON.parse(sessionStorage.user).user_id,
+					quantity: 1
+				},
+				success: function (data) {
+					console.log('sent cart item to the server');
+				},
+				error: function (xhr, status, error) {
+					// Handle unsuccessful login (e.g., show an error message)
+					$("#username-error").html(xhr.responseText);
+					console.error("couldn't get cart.");
+					event.preventDefault();
+				}
+			});
 
 			// Update the cart in localStorage
 			localStorage.setItem('cart', JSON.stringify(existingCart));
@@ -189,6 +210,11 @@
 			// Log the updated cart for debugging (you can remove this in production)
 			console.log('Updated Cart:', existingCart);
 		}
+
+		function userLoggedIn() {
+			return sessionStorage.user != undefined && sessionStorage.user != '';
+		}
+
 
 		function createCard(product) {
 			const card = document.createElement('div')
@@ -207,13 +233,13 @@
 			txtContainer.classList.add('container')
 
 			imgStall.src = 'img/stall.png'
-					imgStall.alt = 'Stall'
-					imgStall.classList.add('stall-img')
-					imgStall.style.width = '100%'
+			imgStall.alt = 'Stall'
+			imgStall.classList.add('stall-img')
+			imgStall.style.width = '100%'
 
 			img.src = product.image_url;
-					img.alt = product.name + ' Product Image'
-					img.classList.add('overlay-image')
+			img.alt = product.name + ' Product Image'
+			img.classList.add('overlay-image')
 
 			titleBold.innerHTML = product.name
 			price.innerHTML = 'Price: $' + product.price
@@ -222,14 +248,9 @@
 			addToCartButton.innerHTML = 'Add to Cart'
 			addToCartButton.classList.add('btn', 'custom-btn')
 			addToCartButton.type = 'submit'
-        	addToCartButton.onclick = function () {
-				addToCart({
-					'name': product.name,
-					'price': product.price,
-					'quantity': product.quantity_available,
-					'image_url': product.image_url
-				});
-        	};
+			addToCartButton.onclick = function () {
+				addToCart(product);
+			};
 
 			title.appendChild(titleBold)
 
@@ -239,37 +260,40 @@
 			txtContainer.appendChild(title)
 			txtContainer.appendChild(price)
 			txtContainer.appendChild(quantity)
-			txtContainer.appendChild(addToCartButton)
+
+			if (userLoggedIn()) {
+				txtContainer.appendChild(addToCartButton);
+			}
 
 			card.appendChild(imgContainer)
 			card.appendChild(txtContainer)
 
 			document.querySelector(".card-container").appendChild(card)
 		} // createCard
-		
-		
+
+
 		// Function to fetch products from the server and create cards on page load
-        $(document).ready(function () {
-            $.ajax({
-                url: "home",
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
+		$(document).ready(function () {
+			$.ajax({
+				url: "home",
+				dataType: "json",
+				success: function (result) {
+					console.log(result);
 
-                    // Clear before showing results
-                    document.querySelector(".card-container").innerHTML = '';
+					// Clear before showing results
+					document.querySelector(".card-container").innerHTML = '';
 
-                    // Create Cards
-                    for (product of result) {
-                        createCard(product);
-                    }
-                },
-                error: function (error) {
-                    console.log(error);
-                    alert("AJAX error");
-                }
-            });
-        });
+					// Create Cards
+					for (product of result) {
+						createCard(product);
+					}
+				},
+				error: function (error) {
+					console.log(error);
+					alert("AJAX error");
+				}
+			});
+		});
 	</script>
 
 </body>
