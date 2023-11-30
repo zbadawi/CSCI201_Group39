@@ -48,6 +48,7 @@ public class Home extends HttpServlet {
 
         // Send JSON data to the client
         response.getWriter().write(json);
+        response.getWriter().flush();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
