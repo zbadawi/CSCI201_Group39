@@ -18,7 +18,7 @@ import util.User;
 public class JDBCConnector {
 	
 	private static Connection connection = null;
-	private static String mySQLusername = "root", mySQLpassword = "root";
+	private static String mySQLusername = "root", mySQLpassword = "password";
 	
 	/**
 	 * See src/main/sql/DATABASE_SETUP_INSTRUCTIONS.txt for how to setup the database

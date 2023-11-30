@@ -193,6 +193,7 @@
 			password: password
 		};
 
+<<<<<<< HEAD
 		// Make the AJAX request
 		$.ajax({
 			url: "login",
@@ -211,6 +212,34 @@
 			}
 		});
 	}
+=======
+			// Construct URL with parameters
+			const url = "login?" + params.toString();
+
+			// Make the fetch request
+			fetch(url, {
+				method: "POST"
+			})
+				.then(response => {
+					if (response.ok) {
+						// If login is successful, store user in sessionStorage and redirect to homepage
+						response.json().then(data => {
+							console.log(data);
+							sessionStorage.setItem('user', JSON.stringify(data));
+						});
+						window.location.href = "farm_homepage.html";
+					} else {
+						// Handle unsuccessful login (e.g., show an error message)
+						response.text().then(data => {
+							document.querySelector('#username-error').innerHTML = data;
+						});
+						console.error("Login failed.");
+						event.preventDefault();
+					}
+				})
+				.catch(error => console.error("Error:", error));
+    }
+>>>>>>> fb72e65 (added user object to sessionStorage when logging in)
 	</script>
 
 </body>
