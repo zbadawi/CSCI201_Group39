@@ -64,3 +64,9 @@ body {
 #active-nav {
     background-color: rgb(96, 137, 181);
 }
+
+.custom-btn {
+    border-radius: 20px;
+    padding: 10px 20px;
+    background-color: #259489;
+}
