@@ -139,6 +139,35 @@ public class JDBCConnector {
 		}
 		return user;
 	}
+	
+	/**
+	 * Returns a Product object with all product info
+	 */
+	public Product getProductInfo(int product_id) {
+		Product product = null;
+		
+		try {
+			String sql = "SELECT * FROM Products WHERE product_id=?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, product_id);
+			ResultSet results = statement.executeQuery();
+			if(!results.next()) {
+				return null;
+			}
+			product = new Product(results.getInt(1),
+								results.getString(2),
+								results.getDouble(3),
+								results.getInt(4),
+								results.getString(5),
+								results.getInt(6));
+		}
+		catch (SQLException e) {
+			System.out.println("SQLException in getProductInfo(" + product_id + "): " + e.getMessage());
+		}
+		return product;
+	}
+	
+	
 
 	/**
 	 * Returns the user's balance, or -1 if error

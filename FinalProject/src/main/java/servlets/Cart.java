@@ -1,11 +1,18 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+
+import util.JDBCConnector;
+import util.Product;
 
 /**
  * Servlet implementation class Cart
@@ -29,8 +36,43 @@ public class Cart extends HttpServlet {
 		
 		String action = request.getParameter("action");
 		int product_id = Integer.parseInt(request.getParameter("product_id"));
+		int user_id = Integer.parseInt(request.getParameter("user_id"));
+		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		
+		System.out.println("read action: " + action);
+		System.out.println("read user_id: " + user_id);
+		System.out.println("read product_id: " + product_id);
+		System.out.println("read quantity: " + quantity);
 		
+		JDBCConnector db = new JDBCConnector();
+		int status = 0;
+		
+		if (action.equals("add")) {
+			status = db.addProductToCart(user_id, product_id, quantity);
+		}
+		else {
+			status = db.removeProductFromCart(user_id, product_id);;
+		}
+		PrintWriter out = response.getWriter();
+		if (status < 0) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			String error = "Bad Add/Remove";
+			out.print(error);
+			out.flush();
+		}
+		else {
+			response.setStatus(HttpServletResponse.SC_OK);
+			if (action.equals("add")) {
+				Gson gson = new Gson();
+				Product product = db.getProductInfo(product_id);
+				String productJSON = gson.toJson(product);
+				out.print(productJSON);
+			}
+			else {
+				out.print("ok");
+			}
+			out.flush();
+		}
 	}
 
 }
