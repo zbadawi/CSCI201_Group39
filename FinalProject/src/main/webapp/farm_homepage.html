@@ -174,13 +174,8 @@
 	<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 	<script>
-		function addToCart(product) {
-			// Retrieve existing cart from localStorage or initialize an empty array
-			const existingCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-
-			// Add the selected product to the cart
-			existingCart.push(product);
-			
+		
+		function addToCart(product) {	
 			// send request to server to add item to cart.
 			$.ajax({
 				url: "Cart",
@@ -201,14 +196,6 @@
 					event.preventDefault();
 				}
 			});
-
-			// Update the cart in localStorage
-			localStorage.setItem('cart', JSON.stringify(existingCart));
-
-			// You can optionally display a confirmation message or update the UI
-
-			// Log the updated cart for debugging (you can remove this in production)
-			console.log('Updated Cart:', existingCart);
 		}
 
 		function userLoggedIn() {
