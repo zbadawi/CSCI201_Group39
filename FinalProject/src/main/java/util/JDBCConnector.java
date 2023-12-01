@@ -18,7 +18,7 @@ import util.User;
 public class JDBCConnector {
 	
 	private static Connection connection = null;
-	private static String mySQLusername = "root", mySQLpassword = "root";
+	private static String mySQLusername = "root", mySQLpassword = "password";
 	
 	/**
 	 * See src/main/sql/DATABASE_SETUP_INSTRUCTIONS.txt for how to setup the database
@@ -27,7 +27,7 @@ public class JDBCConnector {
 	public JDBCConnector() {
 		
 		try {
-			if (connection == null ) {				
+			if (connection == null) {				
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				connection = DriverManager.getConnection("jdbc:mysql://localhost/BirdsAndBees?user=" + mySQLusername + "&password=" + mySQLpassword);
 				System.out.println("Successfully connected to the database");
@@ -168,8 +168,6 @@ public class JDBCConnector {
 		}
 		return product;
 	}
-	
-	
 
 	/**
 	 * Returns the user's balance, or -1 if error
@@ -318,6 +316,12 @@ public class JDBCConnector {
 		}
 		
 		return products;
+	}
+	
+	public List<Product> getUserPurchasedProducts(int user_id) {
+		List<Product> purchasedProducts = new ArrayList<Product>();
+		
+		
 	}
 	
 	/**

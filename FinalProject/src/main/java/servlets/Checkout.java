@@ -31,38 +31,41 @@ public class Checkout extends HttpServlet {
      * Sends the client to farm_homepage.html
      * */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("farm_homepage.html").forward(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
 		int user_id = Integer.parseInt(request.getParameter("user_id"));
-		
 		System.out.println("read user_id: " + user_id);
-
 		
 		JDBCConnector db = new JDBCConnector();
-		int status = 0;
-		List<Product> cart = db.getUserCart(user_id);
-		
-		status = db.buyCart(user_id);;
-			
+		int status = db.buyCart(user_id);
+					
 		PrintWriter out = response.getWriter();
 		if (status < 0) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			String error = "Bad Add/Remove";
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			String error = "Error: ";
+			
+			if (status == -1) {
+				error += "insufficient funds. Please add more money to purchase.";
+			}
+			else if (status == -2) {
+				error += "item(s) out of stock. Please wait until vendors have restocked to purchase.";
+			}
+			else if (status == -3 || status == -4) {
+				error += "cart is empty. Please add products to checkout.";
+			}
+			else if (status == -5) {
+				error += "database error occurred.";
+			}
+			
 			out.print(error);
 			out.flush();
-			
 		}
 		else {
-			Gson gson = new Gson();
-	        String json = new Gson().toJson(cart);
-	        json = json.substring(0, json.length() - 1);
-	        json += ", currentBalance: " + db.getUserBalance(user_id) + "}";
 			response.setStatus(HttpServletResponse.SC_OK);
-			out.print(json);
+			out.print("success");
 			out.flush();
 		}
 		
