@@ -45,12 +45,14 @@ public class AddRemoveProduct extends HttpServlet {
 		
 		if (action.equals("add")) {
 			name = request.getParameter("name");
-			price = Integer.valueOf(request.getParameter("price"));
+			System.out.println("read name: " + request.getParameter("name"));
+			System.out.println("read price: " + request.getParameter("price"));
+			price = Integer.parseInt(request.getParameter("price"));
 			image_url = request.getParameter("image_url");
-			vendor_id = Integer.valueOf(request.getParameter("vendor_id"));
-			quantity = Integer.valueOf(request.getParameter("quantity"));
+			vendor_id = Integer.parseInt(request.getParameter("vendor_id"));
+			quantity = Integer.parseInt(request.getParameter("quantity"));
 		} else {
-			product_id = Integer.valueOf(request.getParameter("product_id"));
+			product_id = Integer.parseInt(request.getParameter("product_id"));
 		}
 		
 		
@@ -64,6 +66,7 @@ public class AddRemoveProduct extends HttpServlet {
 		JDBCConnector db = new JDBCConnector();
 		int status = 0;
 		Product p = null;
+		
 		if (action.equals("add")) {
 			p = new Product(name, price, vendor_id, image_url, quantity);
 			status = db.addProduct(p);

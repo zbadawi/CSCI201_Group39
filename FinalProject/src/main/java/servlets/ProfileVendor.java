@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,11 +28,18 @@ public class ProfileVendor extends HttpServlet {
     }
 
     /**
-     * Sends the client to farm_homepage.html
+     * Sends list of vendor's products in response
      * */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		request.getRequestDispatcher("farm_homepage.html").forward(request, response);
+		int vendor_id = Integer.parseInt(request.getParameter("vendor_id"));
+		JDBCConnector db = new JDBCConnector();
+		List<Product> vendorProducts = db.getVendorProducts(vendor_id);
+		String vendorProductsString = new Gson().toJson(vendorProducts);
+		
+		PrintWriter out = response.getWriter();
+		out.write(vendorProductsString);
+		out.flush();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
