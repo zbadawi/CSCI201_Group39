@@ -140,7 +140,7 @@
 <body>
 	<ul id="nav">
 		<li><a href="farm_homepage.html"> Marketplace</a></li>
-		<li><a id="active-nav" href="farm_profile_vendor.html">Profile</a></li>
+		<li><a id="active-nav" href="farm_profile_vendor.html">Vendor Profile</a></li>
 		<li><a href="farm_checkout.html">Cart</a></li>
 		<li id="login-register"><a href="farm_login.html">Login/Register</a>
 			<ul>
@@ -151,14 +151,15 @@
 	</ul>
 	<!-- nav -->
 
-	<h1 id="profile-header">Profile</h1>
+	<h1 id="profile-header">Vendor Profile</h1>
 
 	<div class="container profile-container">
 		<div id="user-info">
-			<img id="profile-pic" src="https://c.animaapp.com/jJByVzj4/img/ellipse-58@2x.png" alt="Profile Picture">
-			<h2>Jack</h2>
+			<img id="profile-pic" src="https://c.animaapp.com/jJByVzj4/img/ellipse-58@2x.png" alt="Profile Picture"
+				style="display: none;">
+			<h2></h2>
 			<div id="user-type">
-				<h3>Vendor</h3>
+				<h3>Total Revenue Earned: $<span id="profit"></span></h3>
 			</div>
 		</div>
 
@@ -187,7 +188,8 @@
 						</div>
 					</div>
 					<div id="button-container">
-						<button type="button" id="add-product" class="btn btn-success" onclick="validateForm();">Add Product</button>
+						<button type="button" id="add-product" class="btn btn-success" onclick="validateForm();">Add
+							Product</button>
 					</div>
 				</form>
 			</div>
@@ -272,16 +274,8 @@
 				showError('productName', 'Please fill in Product Name and Image URL');
 			}
 
-			if (!integerRegex.test(price)) {
-				showError('price', 'Price must be an integer');
-			}
-
 			if (price.trim() === '') {
 				showError('price', 'Price is required');
-			}
-
-			if (!integerRegex.test(quantity)) {
-				showError('quantity', 'Quantity must be an integer');
 			}
 
 			if (quantity.trim() === '') {
@@ -324,11 +318,11 @@
 				action: 'add',
 				name: document.getElementById('productName').value,
 				vendor_id: JSON.parse(sessionStorage.user).user_id,
-				quantity: 1,
+				quantity: document.getElementById('quantity').value,
 				price: document.getElementById('price').value,
 				image_url: document.getElementById('imageUrl').value
 			};
-			
+
 			console.log(requestData);
 
 			$.ajax({
@@ -338,14 +332,34 @@
 				success: function (data) {
 					console.log('added product to listings');
 					updateProductDetails(requestData);
-					alert('Successfully added product!');
 				},
 				error: function (xhr, status, error) {
-					
+
 					console.log("couldn't add product: ", xhr.responseText);
 					event.preventDefault();
 				}
 			});
+		}
+
+		function removeProduct(card, p_id) {
+			console.log('removing product: ' + card + ' with product id ' + p_id);
+			$.ajax({
+				url: "product",
+				method: "POST",
+				data: {
+					action: 'remove',
+					product_id: p_id
+				},
+				success: function (data) {
+					console.log('removed product');
+					card.remove();
+				},
+				error: function (xhr, status, error) {
+
+					console.log("couldn't add product: ", xhr.responseText);
+					event.preventDefault();
+				}
+			})
 		}
 
 		$(document).ready(function () {
@@ -353,6 +367,30 @@
 				url: "vendor?vendor_id=" + JSON.parse(sessionStorage.user).user_id,
 				method: 'GET',
 				success: function (result) {
+
+					// Construct data object
+					const loginData = {
+						username: JSON.parse(sessionStorage.user).username,
+						password: JSON.parse(sessionStorage.user).password
+					};
+
+					// Make the AJAX request
+					$.ajax({
+						url: "login",
+						method: "POST",
+						data: loginData,
+						success: function (user) {
+							// If login is successful, store user in sessionStorage and redirect to homepage
+							sessionStorage.setItem('user', user);
+						},
+						error: function (xhr, status, error) {
+							// Handle unsuccessful login (e.g., show an error message)
+							$("#username-error").html(xhr.responseText);
+							console.error("Login failed.");
+							event.preventDefault();
+						}
+					});
+
 					resultObj = JSON.parse(result);
 
 					console.log('results: ', resultObj);
@@ -364,11 +402,18 @@
 					resultObj.forEach(product => {
 						updateProductDetails(product);
 					})
+
+
 				},
 				error: function (error) {
 					console.log(error);
 				}
 			});
+
+
+
+			document.getElementById('profit').innerHTML = JSON.parse(sessionStorage.user).current_profit;
+			document.querySelector('#user-info h2').innerHTML = JSON.parse(sessionStorage.user).username;
 		});
 
 		function updateProductDetails(product) {
@@ -381,6 +426,7 @@
 			const titleBold = document.createElement('b')
 			const price = document.createElement('p')
 			const quantity = document.createElement('p')
+			const removeProductButton = document.createElement('button');
 
 			card.classList.add('card')
 			imgContainer.classList.add('img-container')
@@ -408,11 +454,20 @@
 			txtContainer.appendChild(price)
 			txtContainer.appendChild(quantity)
 
+			removeProductButton.innerHTML = 'Remove Product'
+			removeProductButton.classList.add('btn', 'custom-btn')
+			//console.log("adding product to page with product )
+			removeProductButton.onclick = function () {
+				removeProduct(card, product.product_id);
+			};
+
+			txtContainer.appendChild(removeProductButton);
+
 			card.appendChild(imgContainer)
 			card.appendChild(txtContainer)
 
 			document.querySelector(".card-container").appendChild(card)
-			
+
 		}
 
 		function findLastElementChild(parent) {

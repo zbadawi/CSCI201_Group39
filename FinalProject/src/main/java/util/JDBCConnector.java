@@ -246,8 +246,13 @@ public class JDBCConnector {
 		int status = 0;
 		
 		try {
-			String sql = "DELETE FROM Products WHERE product_id = ?";
+			String sql = "DELETE FROM Carts WHERE product_id = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, product_id);
+			statement.executeUpdate();
+			
+			sql = "DELETE FROM Products WHERE product_id = ?";
+			statement = connection.prepareStatement(sql);
 			statement.setInt(1, product_id);
 			statement.executeUpdate();
 		}

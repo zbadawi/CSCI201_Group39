@@ -47,12 +47,13 @@ public class AddRemoveProduct extends HttpServlet {
 			name = request.getParameter("name");
 			System.out.println("read name: " + request.getParameter("name"));
 			System.out.println("read price: " + request.getParameter("price"));
-			price = Integer.parseInt(request.getParameter("price"));
+			price = Double.parseDouble(request.getParameter("price"));
 			image_url = request.getParameter("image_url");
 			vendor_id = Integer.parseInt(request.getParameter("vendor_id"));
 			quantity = Integer.parseInt(request.getParameter("quantity"));
 		} else {
 			product_id = Integer.parseInt(request.getParameter("product_id"));
+			System.out.println("removeing product" + product_id);
 		}
 		
 		
