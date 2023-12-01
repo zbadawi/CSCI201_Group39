@@ -96,6 +96,15 @@
 		.marketplace-image {
 			height: 500px;
 		}
+		
+		.quantity-input {
+			display: inline-block;
+			width: 20%;
+			border-radius: 10px;
+			padding: 4px;
+			margin-left: 20px;
+		}
+		
 	</style>
 </head>
 
@@ -179,7 +188,7 @@
 
 	<script>
 		
-		function addToCart(product) {	
+		function addToCart(product, quantity) {	
 			// send request to server to add item to cart.
 			$.ajax({
 				url: "Cart",
@@ -188,7 +197,7 @@
 					action: 'add',
 					product_id: product.product_id,
 					user_id: JSON.parse(sessionStorage.user).user_id,
-					quantity: 1
+					quantity: quantity
 				},
 				success: function (data) {
 					console.log('sent cart item to the server');
@@ -218,6 +227,7 @@
 			const price = document.createElement('p')
 			const quantity = document.createElement('p')
 			const addToCartButton = document.createElement('button')
+			const quantityInput = document.createElement('input');
 
 			card.classList.add('card')
 			imgContainer.classList.add('img-container')
@@ -228,7 +238,7 @@
 			imgStall.classList.add('stall-img')
 			imgStall.style.width = '100%'
 
-			img.src = 'img/' + product.image_url;
+			img.src = product.image_url;
 			img.alt = product.name + ' Product Image'
 			img.classList.add('overlay-image')
 
@@ -239,10 +249,16 @@
 			addToCartButton.innerHTML = 'Add to Cart'
 			addToCartButton.classList.add('btn', 'custom-btn')
 			addToCartButton.type = 'submit'
-			addToCartButton.onclick = function () {
-				addToCart(product);
-			};
+			
+			
+			quantityInput.setAttribute('type', 'number');
+			quantityInput.setAttribute('value', 1);
+			quantityInput.classList.add('quantity-input');
 
+			addToCartButton.onclick = function () {
+				addToCart(product, quantityInput.value);
+			};
+			
 			title.appendChild(titleBold)
 
 			imgContainer.appendChild(imgStall)
@@ -254,6 +270,7 @@
 
 			if (userLoggedIn()) {
 				txtContainer.appendChild(addToCartButton);
+				txtContainer.appendChild(quantityInput);
 			}
 
 			card.appendChild(imgContainer)

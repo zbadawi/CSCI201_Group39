@@ -20,8 +20,10 @@
 		}
 
 		#checkout-header {
-			display: flex;
-			align-items: center;
+			
+			text-align: center;
+			vertical-align: middle;
+			line-height: 2;
 			top: 0;
 
 			height: 200px;
@@ -31,7 +33,7 @@
 			font-size: 4em;
 			color: #FFF;
 
-			background-color: #40db47;
+			background-color: green;
 		}
 
 		h2 {
@@ -73,6 +75,10 @@
 		}
 		
 		.checkout-message-container, .error-message-container {
+			margin: 20px;
+		}
+		
+		.col-12 {
 			margin: 20px;
 		}
 		
@@ -126,7 +132,7 @@
 
 		if (!userLoggedIn()) {
 			console.log('user not logged in, not showing cart');
-			document.querySelector('.container').innerHTML = `<h1>Please log in to view cart.</h1>`;
+			document.querySelector('.container').innerHTML = `<h1>Please <a href="farm_login.html">log in</a> to view cart and make purchases.</h1>`;
 		}
 		else {
 			// get user cart from database and save in sessionStorage
