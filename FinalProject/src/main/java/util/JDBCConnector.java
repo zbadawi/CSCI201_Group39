@@ -321,7 +321,30 @@ public class JDBCConnector {
 	public List<Product> getUserPurchasedProducts(int user_id) {
 		List<Product> purchasedProducts = new ArrayList<Product>();
 		
+		try {
+			String sql = "SELECT p.product_id, p.name, p.price, p.vendor_id, p.image_url, c.quantity "
+					   + "FROM Products p JOIN Carts c ON c.product_id = p.product_id "
+					   + "WHERE c.user_id = ? AND c.purchased = true";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, user_id);
+			ResultSet results = statement.executeQuery();
+			
+			while (results.next()) {
+				Product p = new Product(results.getInt(1),
+						results.getString(2),
+						results.getDouble(3),
+						results.getInt(4),
+						results.getString(5),
+						results.getInt(6));
+
+				purchasedProducts.add(p);
+			}
+		}
+		catch (SQLException e) {
+			System.out.println("SQLException in getUserPurchasedProducts(" + user_id + "): " + e.getMessage());
+		}
 		
+		return purchasedProducts;
 	}
 	
 	/**

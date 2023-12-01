@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,7 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import util.JDBCConnector;
+import util.Product;
 
 /**
  * Servlet implementation class Home
@@ -24,20 +28,25 @@ public class ProfileBuyer extends HttpServlet {
     }
 
     /**
-     * Sends the client to farm_homepage.html
+     * Returns list of user's previously purchased products
      * */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("farm_homepage.html").forward(request, response);
+		int user_id = Integer.parseInt(request.getParameter("user_id"));
+		JDBCConnector db = new JDBCConnector();
+		List<Product> purchasedProducts = db.getUserPurchasedProducts(user_id);
+		String purchasedProductsString = new Gson().toJson(purchasedProducts);
+		
+		response.setStatus(HttpServletResponse.SC_OK);
+		
+		response.getWriter().write(purchasedProductsString);
+		response.getWriter().flush();
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		getUserBalance(int user_id()
-
-//		String action = request.getParameter("action");
 		int user_id = Integer.parseInt(request.getParameter("user_id"));
 		double amount_added = Integer.parseInt(request.getParameter("amount_added"));
 		
-//		System.out.println("read action: " + action);
 		System.out.println("read user_id: " + user_id);
 		System.out.println("read amount_added: " + amount_added);
 		
@@ -61,9 +70,6 @@ public class ProfileBuyer extends HttpServlet {
 			out.flush();
 		}
 		else {
-//			User user = db.getUserInfo(user_id);
-//			Gson gson = new Gson();
-//			String userJSON = gson.toJson(user);
 			response.setStatus(HttpServletResponse.SC_OK);
 			out.print("Succesful Add/Remove");
 			out.flush();
