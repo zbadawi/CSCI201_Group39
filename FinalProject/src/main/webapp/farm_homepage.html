@@ -268,7 +268,7 @@
 			txtContainer.appendChild(price)
 			txtContainer.appendChild(quantity)
 
-			if (userLoggedIn()) {
+			if (userLoggedIn() && JSON.parse(sessionStorage.user).account_type == 0) {
 				txtContainer.appendChild(addToCartButton);
 				txtContainer.appendChild(quantityInput);
 			}

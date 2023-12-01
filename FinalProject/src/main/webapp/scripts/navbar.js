@@ -24,8 +24,9 @@ if (userLoggedIn()) {
 		profileLink.href = 'farm_profile_buyer.html';
 		profileLink.innerHTML = 'Buyer Profile';
 	}
-	else {
+	else { // acount is seller
 		profileLink.innerHTML = 'Vendor Profile';
+		document.querySelector('#nav li:nth-child(3)').remove();
 	}
 }
 else {
