@@ -18,7 +18,7 @@ import util.User;
 public class JDBCConnector {
 	
 	private static Connection connection = null;
-	private static String mySQLusername = "root", mySQLpassword = "password";
+	private static String mySQLusername = "root", mySQLpassword = "root";
 	
 	/**
 	 * See src/main/sql/DATABASE_SETUP_INSTRUCTIONS.txt for how to setup the database
@@ -27,7 +27,7 @@ public class JDBCConnector {
 	public JDBCConnector() {
 		
 		try {
-			if (connection == null) {				
+			if (connection == null ) {				
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				connection = DriverManager.getConnection("jdbc:mysql://localhost/BirdsAndBees?user=" + mySQLusername + "&password=" + mySQLpassword);
 				System.out.println("Successfully connected to the database");

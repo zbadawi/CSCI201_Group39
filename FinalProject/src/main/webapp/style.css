@@ -3,6 +3,8 @@
 body {
     font-family: 'Josefin Sans', sans-serif;
     background-color: #FFFFF2;
+    margin: 0;
+	padding: 0;
 }
 
 #nav {

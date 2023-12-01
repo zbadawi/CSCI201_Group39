@@ -60,7 +60,7 @@ function addItem(item) {
 	// Set attributes and properties.
 	spanRemove.title = 'Remove';
 	spanItem.innerHTML = item.name;
-	img.src = item.image_url;
+	img.src = 'img/' + item.image_url;
 	img.alt = item.name + ' Product Image';
 	spanQuantity.innerHTML = item.quantity;
 	priceBold.innerHTML = '$' + item.price;
