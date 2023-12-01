@@ -36,13 +36,23 @@ public class AddRemoveProduct extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String action = request.getParameter("action");
-		String name = request.getParameter("name");
-		double price = Integer.valueOf(request.getParameter("price"));
-		String image_url = request.getParameter("image_url");
-
-		int vendor_id = Integer.valueOf(request.getParameter("vendor_id"));
-		int product_id = Integer.valueOf(request.getParameter("product_id"));
-		int quantity = Integer.valueOf(request.getParameter("quantity"));
+		String name = null;
+		double price = 0;
+		String image_url = null;
+		int vendor_id = 0;
+		int quantity = 0;
+		int product_id = 0;
+		
+		if (action.equals("add")) {
+			name = request.getParameter("name");
+			price = Integer.valueOf(request.getParameter("price"));
+			image_url = request.getParameter("image_url");
+			vendor_id = Integer.valueOf(request.getParameter("vendor_id"));
+			quantity = Integer.valueOf(request.getParameter("quantity"));
+		} else {
+			product_id = Integer.valueOf(request.getParameter("product_id"));
+		}
+		
 		
 		System.out.println("read action: " + action);
 		System.out.println("read product_id: " + product_id);
